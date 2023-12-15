@@ -14,7 +14,9 @@ public class RestControllerBugData {
             new BugDataTemporary("Venus", "Red", "Turret attacker, cannot move, can rotate", 1),
             new BugDataTemporary("Dizzy", "Blue", "Spins and attacks", 2),
             new BugDataTemporary("Runner", "Green", "Runs around the outside of map and attacks", 3),
-            new BugDataTemporary("SmackLol", "Yellow", "Attack, only attack", 4)
+            new BugDataTemporary("SmackLol", "Yellow", "Attack, only attack", 4),
+            new BugDataTemporary("Bobo", "Gold", "metallurgist", 5)
+
     );
 
     @GetMapping
