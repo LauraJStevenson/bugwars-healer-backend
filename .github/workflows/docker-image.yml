@@ -25,4 +25,4 @@ jobs:
 
     - name: Push Docker image
       if: github.event_name != 'pull_request'
-      run: docker push bugwars-healer-backend:latest
+      run: docker push laurajstevenson/bugwars-healer-backend:latest
