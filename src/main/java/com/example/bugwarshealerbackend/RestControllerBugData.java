@@ -15,7 +15,7 @@ public class RestControllerBugData {
             new BugDataTemporary("Dizzy", "Blue", "Spins and attacks", 2),
             new BugDataTemporary("Runner", "Green", "Runs around the outside of map and attacks", 3),
             new BugDataTemporary("SmackLol", "Yellow", "Attack, only attack", 4),
-            new BugDataTemporary("Bobo", "Gold", "metallurgist", 5)
+            new BugDataTemporary("Bobo", "Gold", "metallurgist, everything he touches turns to gold", 5)
 
     );
 
