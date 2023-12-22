@@ -23,7 +23,7 @@ Bug Wars is a Java-based programming competition where players select or program
 ### Links
 
 - Dev Environment URL: [Bug Wars Dev Environment](https://stage-bugwars-healer.onrender.com/api/v1/bug-data)
-- Front End Dev Environment URL: [Bug Wars Front End](https://bugwars-healer-frontend-stage.onrender.com/)
+- Front End Dev Environment URL: [Bug Wars Front End](https://laurajstevenson.github.io/bugwars-healer-frontend/)
 - Front End Repo: [Bug Wars FE](https://github.com/LauraJStevenson/bugwars-healer-frontend)
 - Back End Repo: [Bug Wars BE](https://github.com/LauraJStevenson/bugwars-healer-backend)
 
