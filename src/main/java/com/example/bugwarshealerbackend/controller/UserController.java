@@ -5,6 +5,7 @@ import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1")
 public class UserController {
 
@@ -44,7 +46,10 @@ public class UserController {
         return ResponseEntity.ok(updateUser);
     }
 
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
+
     public User createUser(@Valid @RequestBody User user) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String encryptedPwd = bcrypt.encode(user.getPassword());
