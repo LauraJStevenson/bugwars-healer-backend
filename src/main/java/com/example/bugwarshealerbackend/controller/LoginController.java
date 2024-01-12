@@ -1,6 +1,7 @@
 package com.example.bugwarshealerbackend.controller;
 
 import com.example.bugwarshealerbackend.jpa.UserRepository;
+import com.example.bugwarshealerbackend.jwt.JwtService;
 import com.example.bugwarshealerbackend.model.AuthenticatedUser;
 import com.example.bugwarshealerbackend.model.User;
 import com.example.bugwarshealerbackend.model.UserLogin;
@@ -36,15 +37,8 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        // create a token
-        UUID randomToken = UUID.randomUUID();
-        String token = randomToken.toString();
-        // associate token with user
-        loggedInUser.setToken(token);
-        // save the database
-        userRepository.save(loggedInUser);
-
-        return ResponseEntity.ok(new AuthenticatedUser(loggedInUser.getUsername(), loggedInUser.getPassword(), token));
+        String jwtToken = JwtService.createToken(userlogin.getUsername());
+        return ResponseEntity.ok(new AuthenticatedUser(loggedInUser.getUsername(), loggedInUser.getPassword(), jwtToken));
 
     }
 }
