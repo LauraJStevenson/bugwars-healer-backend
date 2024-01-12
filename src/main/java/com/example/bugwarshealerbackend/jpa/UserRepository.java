@@ -7,11 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository  extends JpaRepository<User, Long> {
-
-    //retrieved the user from token
-    @Query(value = "SELECT u FROM User u where u.token = ?1")
-    User findByToken(String token);
-
+    
     //retrieved the user from username
     @Query(value = "SELECT u FROM User u where u.username = ?1")
     User findByUsername(String username);
