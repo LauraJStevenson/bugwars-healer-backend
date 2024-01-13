@@ -13,7 +13,12 @@ import java.util.Date;
 public class JwtService {
 
     public static String ISSUER = "com.example.bugwarsbackend";
-    private static String SECRET_KEY = "VGhpcyBpcyB0aGUgc2VjcmV0IGZvciBCdWdXYXJzIHNlcnZlci4=";
+    private static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
+
+    //System.getenv("JWT_TOKEN_GENERATED") is the syntax used to access the value of
+    //our generated token. You should add the variable JWT_TOKEN_GENERATED to your env.properties
+    //file, which is gitignored by default for security reasons. Please contact Laura or Yagmur
+    //to get the values that should be in there.
 
     public static String createToken(String username)
     {
