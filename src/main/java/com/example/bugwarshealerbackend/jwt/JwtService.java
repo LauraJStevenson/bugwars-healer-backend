@@ -13,7 +13,8 @@ import java.util.Date;
 public class JwtService {
 
     public static String ISSUER = "com.example.bugwarsbackend";
-    private static String SECRET_KEY = "VGhpcyBpcyB0aGUgc2VjcmV0IGZvciBCdWdXYXJzIHNlcnZlci4=";
+    private static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
+
 
     public static String createToken(String username)
     {
