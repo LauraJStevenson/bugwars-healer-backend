@@ -58,6 +58,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         String token = authorizationHeader.replace("Bearer ", "");
         try
         {
+            //Check whether the token is deny-listed.
+            if(JwtService.isDenyListed(token)) {
+                return null;
+            }
+
             String claimUserName = JwtService.getUserNameForToken(token);
             if (claimUserName == null)
             {
