@@ -53,7 +53,9 @@ public class UserController {
         }
 
         if (userDetails.getPassword() != null) {
-            user.setPassword(userDetails.getPassword()); // Change password is not functioning now. Need to figure out encryption for password changes.
+            BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+            String encryptedPwd = bcrypt.encode(userDetails.getPassword());
+            user.setPassword(encryptedPwd);
         }
 
         if (userDetails.getEmail() != null) {
