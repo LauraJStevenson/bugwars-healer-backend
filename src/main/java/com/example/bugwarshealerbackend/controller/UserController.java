@@ -38,27 +38,24 @@ public class UserController {
                                            @RequestBody User userDetails) throws ResourceNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        // Only update username if it's provided
+        // If statements are needed to allow partial updates.
+
         if (userDetails.getUsername() != null) {
             user.setUsername(userDetails.getUsername());
         }
 
-        // Only update firstname if it's provided
         if (userDetails.getFirstname() != null) {
             user.setFirstname(userDetails.getFirstname());
         }
 
-        // Only update lastname if it's provided
         if (userDetails.getLastname() != null) {
             user.setLastname(userDetails.getLastname());
         }
 
-        // Only update password if it's provided
         if (userDetails.getPassword() != null) {
-            user.setPassword(userDetails.getPassword()); // Consider encrypting the password here if it's not already encrypted
+            user.setPassword(userDetails.getPassword()); // Change password is not functioning now. Need to figure out encryption for password changes.
         }
 
-        // Only update email if it's provided
         if (userDetails.getEmail() != null) {
             user.setEmail(userDetails.getEmail());
         }
