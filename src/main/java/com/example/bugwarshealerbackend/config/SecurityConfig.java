@@ -36,7 +36,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated())
                 .addFilterBefore(new AuthenticationFilter(userRepository),
