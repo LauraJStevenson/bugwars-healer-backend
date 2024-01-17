@@ -20,23 +20,23 @@ public class User {
         private long id;
 
         @Size (min = 3, max = 15, message = "Username length must be between 3 and 15 characters.")
-        @Column(name= "username", nullable = false)
+        @Column(name= "username", nullable = false, unique = true)
         private String username;
 
-        @Size (min = 3, max = 15, message = "First name length must be between 3 and 15 characters.")
+        @Size (min = 2, max = 15, message = "First name length must be between 2 and 15 characters.")
         @Column(name = "firstname", nullable = false)
         private String firstname;
 
-        @Size (min = 3, max = 15, message = "Last name length must be between 3 and 15 characters.")
+        @Size (min = 2, max = 15, message = "Last name length must be between 2 and 15 characters.")
         @Column(name = "lastname", nullable = false)
         private String lastname;
 
         @Column(name = "password_hash", nullable = false)
         private String password;
 
-        @Size(min = 5, max = 100, message = "Email length must be between 5 and 100 characters.")
+        @Size(min = 5, max = 50, message = "Email length must be between 5 and 100 characters.")
         @Email(message = "Email should be valid.")
-        @Column(name = "email", nullable = false)
+        @Column(name = "email", nullable = false, unique = true)
         private String email;
 
         @Column(name = "counter", nullable = true)
