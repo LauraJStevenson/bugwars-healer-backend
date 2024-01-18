@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 public class LogoutController {
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public void logout()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
