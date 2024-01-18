@@ -38,7 +38,7 @@ public class LoginController {
         }
 
         String jwtToken = JwtService.createToken(userlogin.getUsername());
-        return ResponseEntity.ok(new AuthenticatedUser(loggedInUser.getUsername(), loggedInUser.getPassword(), jwtToken));
+        return ResponseEntity.ok(new AuthenticatedUser(loggedInUser.getId(), loggedInUser.getUsername(), loggedInUser.getPassword(), loggedInUser.getFirstname(), loggedInUser.getLastname(), loggedInUser.getEmail(), jwtToken));
 
     }
 }

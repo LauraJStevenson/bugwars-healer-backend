@@ -35,15 +35,35 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId,
-                                           @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+                                           @RequestBody User userDetails) throws ResourceNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
-        user.setUsername(userDetails.getUsername());
-        user.setFirstname(userDetails.getFirstname());
-        user.setLastname(userDetails.getLastname());
-        user.setPassword(userDetails.getPassword());
-        user.setEmail(userDetails.getEmail());
-        final User updateUser = userRepository.save(user);
-        return ResponseEntity.ok(updateUser);
+
+        // If statements are needed to allow partial updates.
+
+        if (userDetails.getUsername() != null) {
+            user.setUsername(userDetails.getUsername());
+        }
+
+        if (userDetails.getFirstname() != null) {
+            user.setFirstname(userDetails.getFirstname());
+        }
+
+        if (userDetails.getLastname() != null) {
+            user.setLastname(userDetails.getLastname());
+        }
+
+        if (userDetails.getPassword() != null) {
+            BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+            String encryptedPwd = bcrypt.encode(userDetails.getPassword());
+            user.setPassword(encryptedPwd);
+        }
+
+        if (userDetails.getEmail() != null) {
+            user.setEmail(userDetails.getEmail());
+        }
+
+        final User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
 
