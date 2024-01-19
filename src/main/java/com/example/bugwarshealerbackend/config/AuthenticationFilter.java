@@ -1,9 +1,7 @@
 package com.example.bugwarshealerbackend.config;
 
 import com.example.bugwarshealerbackend.jpa.UserRepository;
-import com.example.bugwarshealerbackend.jwt.JwtService;
 import com.example.bugwarshealerbackend.model.User;
-import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,32 +54,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     private UsernamePasswordAuthenticationToken createToken(String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
-        try
-        {
-            //Check whether the token is deny-listed.
-            if(JwtService.isDenyListed(token)) {
-                return null;
-            }
-
-            String claimUserName = JwtService.getUserNameForToken(token);
-            if (claimUserName == null)
-            {
-                return null;
-            }
-
-            User authenticatedUser = userRepository.findByUsername(claimUserName);
-            System.out.println("Authenticated user: " + authenticatedUser);
-            if (authenticatedUser == null)
-            {
-                return null;
-            }
-
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            return new UsernamePasswordAuthenticationToken(authenticatedUser.getUsername(), token, authorities);
-        }
-        catch (MalformedJwtException ex)
+        User authenticatedUser = userRepository.findByToken(token);
+        if (authenticatedUser == null)
         {
             return null;
         }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        return new UsernamePasswordAuthenticationToken(authenticatedUser.getUsername(), token, authorities);
     }
 }

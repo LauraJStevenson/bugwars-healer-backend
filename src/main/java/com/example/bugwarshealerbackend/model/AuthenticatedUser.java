@@ -7,9 +7,9 @@ public class AuthenticatedUser extends UserLogin{
 
     private final String token;
 
-    public AuthenticatedUser(Long id, String username, String passwordHash, String firstname, String lastname, String email, String token) {
+    public AuthenticatedUser(String username, String passwordHash, String token) {
 
-        super(id, username, passwordHash, firstname, lastname, email);
+        super(username, passwordHash);
         this.token = token;
     }
 }
