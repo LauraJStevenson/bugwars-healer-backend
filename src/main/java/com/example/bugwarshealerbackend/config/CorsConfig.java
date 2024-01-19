@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
         System.out.println("CORS configuration applied!");
         registry.addMapping("/api/**")
                 .allowedOrigins("http://localhost:5173", "https://bugwars-healer-frontend-stage.onrender.com")
+
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)
