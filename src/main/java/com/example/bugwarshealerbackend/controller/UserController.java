@@ -5,6 +5,7 @@ import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1")
 public class UserController {
 
@@ -33,18 +35,41 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId,
-                                           @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+                                           @RequestBody User userDetails) throws ResourceNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
-        user.setUsername(userDetails.getUsername());
-        user.setFirstname(userDetails.getFirstname());
-        user.setLastname(userDetails.getLastname());
-        user.setPassword(userDetails.getPassword());
-        user.setEmail(userDetails.getEmail());
-        final User updateUser = userRepository.save(user);
-        return ResponseEntity.ok(updateUser);
+
+        // If statements are needed to allow partial updates.
+
+        if (userDetails.getUsername() != null) {
+            user.setUsername(userDetails.getUsername());
+        }
+
+        if (userDetails.getFirstname() != null) {
+            user.setFirstname(userDetails.getFirstname());
+        }
+
+        if (userDetails.getLastname() != null) {
+            user.setLastname(userDetails.getLastname());
+        }
+
+        if (userDetails.getPassword() != null) {
+            BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+            String encryptedPwd = bcrypt.encode(userDetails.getPassword());
+            user.setPassword(encryptedPwd);
+        }
+
+        if (userDetails.getEmail() != null) {
+            user.setEmail(userDetails.getEmail());
+        }
+
+        final User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
+
     public User createUser(@Valid @RequestBody User user) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String encryptedPwd = bcrypt.encode(user.getPassword());
