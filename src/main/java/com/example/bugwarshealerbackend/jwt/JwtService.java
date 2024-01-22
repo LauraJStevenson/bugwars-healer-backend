@@ -14,7 +14,7 @@ import java.util.HashSet;
 public class JwtService {
 
     public static String ISSUER = "com.example.bugwarsbackend";
-    private static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
+     static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
 
     // 1hour is 3600 * 1000 milliseconds.
     public static final int EXPIRY_IN_MILLISECOND = 3600 * 1000;
@@ -42,11 +42,12 @@ public class JwtService {
 
         //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder()
-                .setIssuedAt(now)
-                .setSubject(username)
-                .setIssuer(ISSUER)
-                .setExpiration(new Date(now.getTime() + EXPIRY_IN_MILLISECOND))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256);
+                .setIssuedAt(now) //when the token was issued
+                .setSubject(username) //set the subject claim representing the user association with the token
+                .setIssuer(ISSUER) // sets the issuer claim in the JWT indicating the entity that issued the token
+                .setExpiration(new Date(now.getTime() + EXPIRY_IN_MILLISECOND)) //specifies when the token will expire
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256); /*It signs the JWT with a secret key obtained from the getSignInKey()
+                                                                       method using the HMAC SHA-256 algorithm*/
 
         //Builds the JWT and serializes it to a compact, URL-safe string
         return builder.compact();
@@ -75,7 +76,7 @@ public class JwtService {
         return claims.getSubject();
     }
 
-    private static Key getSignInKey()
+    static Key getSignInKey()
     {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
