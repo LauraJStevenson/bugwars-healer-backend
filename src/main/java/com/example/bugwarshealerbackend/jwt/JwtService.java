@@ -14,7 +14,7 @@ import java.util.HashSet;
 public class JwtService {
 
     public static String ISSUER = "com.example.bugwarsbackend";
-    private static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
+     static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
 
     // 1hour is 3600 * 1000 milliseconds.
     public static final int EXPIRY_IN_MILLISECOND = 3600 * 1000;
@@ -75,7 +75,7 @@ public class JwtService {
         return claims.getSubject();
     }
 
-    private static Key getSignInKey()
+    static Key getSignInKey()
     {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
