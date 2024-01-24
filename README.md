@@ -17,8 +17,7 @@ Bug Wars is a Java-based programming competition where players select or program
 
 ### Screenshots
 
-[<img src=""/>]()
-[<img src=""/>]()
+![ScreenCapHomePage](https://github.com/LauraJStevenson/bugwars-healer-backend/assets/117865610/29c368d1-b207-4779-9033-d1e8f632dbab)
 
 ### Links
 
