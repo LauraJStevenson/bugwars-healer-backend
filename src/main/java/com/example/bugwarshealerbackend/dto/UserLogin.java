@@ -1,4 +1,4 @@
-package com.example.bugwarshealerbackend.model;
+package com.example.bugwarshealerbackend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
