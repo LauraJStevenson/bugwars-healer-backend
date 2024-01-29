@@ -1,9 +1,10 @@
-package com.example.bugwarshealerbackend.model;
+package com.example.bugwarshealerbackend.dto;
 
+import com.example.bugwarshealerbackend.dto.UserLogin;
 import lombok.Getter;
 
 @Getter
-public class AuthenticatedUser extends UserLogin{
+public class AuthenticatedUser extends UserLogin {
 
     private final String token;
 

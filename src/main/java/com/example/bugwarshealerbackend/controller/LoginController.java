@@ -2,18 +2,15 @@ package com.example.bugwarshealerbackend.controller;
 
 import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.jwt.JwtService;
-import com.example.bugwarshealerbackend.model.AuthenticatedUser;
+import com.example.bugwarshealerbackend.dto.AuthenticatedUser;
 import com.example.bugwarshealerbackend.model.User;
-import com.example.bugwarshealerbackend.model.UserLogin;
+import com.example.bugwarshealerbackend.dto.UserLogin;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @CrossOrigin
