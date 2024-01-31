@@ -10,8 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class UserRepositoryTest {
@@ -39,7 +38,6 @@ class UserRepositoryTest {
     when(query.getSingleResult()).thenReturn(expectedUser);
     when(userRepository.findByUsername(username)).thenReturn(expectedUser);
 
-
     //ACT
     User actualUser = userRepository.findByUsername(username);
 
@@ -47,8 +45,8 @@ class UserRepositoryTest {
     assertNotNull(actualUser);
     assertEquals(expectedUser, actualUser);
     assertEquals(entityManager).createQuery("SELECT u FROM User u where u.username = ?1", User.class);
-//        verify(query).setParameter(1, username);
-//        verify(query).getSingleResult();
+      //verify(query).setParameter(1, username);
+       //verify(query).getSingleResult();
 }
 
 
