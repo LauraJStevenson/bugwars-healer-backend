@@ -53,6 +53,20 @@ public class JwtService {
         return builder.compact();
     }
 
+    public static String createRefreshToken(String username) {
+        Date now = new Date();
+        long expiry = 7200000;
+
+        JwtBuilder builder = Jwts.builder()
+                .setIssuedAt(now)
+                .setSubject(username)
+                .setIssuer(ISSUER)
+                .setExpiration(new Date(now.getTime() + expiry))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256);
+
+        return builder.compact();
+    }
+
     public static String getUserNameForToken(String token)
     {
         Claims claims = Jwts.parserBuilder()

@@ -5,7 +5,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -23,4 +25,9 @@ public interface UserRepository  extends JpaRepository<User, Long> {
     @Override
     @CacheEvict(cacheNames = "users", key = "#entity.username")
     void delete(User entity);
+
+    @Modifying
+    @Query("update User u set u.refreshToken = :refreshToken where u.id = :userId")
+    void updateRefreshToken(@Param("userId") Long userId, @Param("refreshToken") String refreshToken);
+
 }
