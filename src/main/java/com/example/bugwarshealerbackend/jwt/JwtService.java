@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -48,13 +49,18 @@ public class JwtService {
 
     public static String createToken(String username)
     {
+        return createToken(username, ISSUER);
+    }
+
+    static String createToken(String username, String issuer)
+    {
         Date now = new Date();
 
         //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder()
                 .setIssuedAt(now) //when the token was issued
                 .setSubject(username) //set the subject claim representing the user association with the token
-                .setIssuer(ISSUER) // sets the issuer claim in the JWT indicating the entity that issued the token
+                .setIssuer(issuer) // sets the issuer claim in the JWT indicating the entity that issued the token
                 .setExpiration(new Date(now.getTime() + EXPIRY_IN_MILLISECOND)) //specifies when the token will expire
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256); /*It signs the JWT with a secret key obtained from the getSignInKey()
                                                                        method using the HMAC SHA-256 algorithm*/
@@ -62,6 +68,7 @@ public class JwtService {
         //Builds the JWT and serializes it to a compact, URL-safe string
         return builder.compact();
     }
+
 
     /**
      * Creates a refresh token for a given username. This token is used to obtain a new access token once the current access token expires.
@@ -91,13 +98,13 @@ public class JwtService {
             return null; // Token is invalidated
         }
 
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims = Jwts.parserBuilder() //uses the jwt class from the jjwt library to parse and validate the JWT
+                .setSigningKey(getSignInKey()) //sets the sign in let using the getSignInKey method
+                .build()//builds the parser
+                .parseClaimsJws(token) //parses the JSON web signature from the provided token
+                .getBody(); //getbody retrieves the body (claims) of the JWT
 
-        if (!claims.getIssuer().equals(JwtService.ISSUER))
+        if (!claims.getIssuer().equals(JwtService.ISSUER)) //checks if the issuer of the JWT is equal to the expected issuer. If not, then it returns null
         {
             return null;
         }
@@ -109,11 +116,8 @@ public class JwtService {
             return null;
         }
 
-        return claims.getSubject();
+        return claims.getSubject(); //If the issuer is valid and the token is not expired, the method returns the subject of the JWT that represents the username.
     }
 
-    static Key getSignInKey()
-    {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
-    }
+    static Key getSignInKey() {return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));}
 }
