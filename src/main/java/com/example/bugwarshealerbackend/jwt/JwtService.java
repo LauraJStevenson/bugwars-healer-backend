@@ -6,14 +6,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.stereotype.Service;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.UUID;
 
+@Service
 public class JwtService {
 
     public static String ISSUER = "com.example.bugwarsbackend";
-     static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
+    static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
 
     // 1hour is 3600 * 1000 milliseconds.
     public static final int EXPIRY_IN_MILLISECOND = 3600 * 1000;
@@ -24,6 +29,13 @@ public class JwtService {
     //to get the values that should be in there.
 
     private static final HashSet<String> JWT_DENY_LIST = new HashSet<>();
+
+    public static void invalidateToken(String token) {
+        JWT_DENY_LIST.add(token);
+    }
+    public static boolean isTokenInvalidated(String token) {
+        return JWT_DENY_LIST.contains(token);
+    }
 
     public static void addToDenyList(String token)
     {
@@ -57,8 +69,35 @@ public class JwtService {
         return builder.compact();
     }
 
-    public static String getUserNameForToken(String token)
-    {
+
+    /**
+     * Creates a refresh token for a given username. This token is used to obtain a new access token once the current access token expires.
+     * The refresh token is signed using the HMAC SHA-256 algorithm and includes information such as the token ID, issue date, subject, issuer, and expiration time.
+     *
+     * @param username The username for whom the refresh token is being created. This is set as the subject in the JWT claims.
+     * @return A String representing the JWT refresh token. This token is a compact, URL-safe string serialized from the JWT claims.
+     */
+    public static String createRefreshToken(String username) {
+        Date now = new Date();
+        long expiry = 7200000;
+        String jti = UUID.randomUUID().toString();
+
+        JwtBuilder builder = Jwts.builder()
+                .setId(jti)
+                .setIssuedAt(now)
+                .setSubject(username)
+                .setIssuer(ISSUER)
+                .setExpiration(new Date(now.getTime() + expiry))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256);
+        return builder.compact();
+    }
+
+    public static String getUserNameForToken(String token) {
+
+        if (isTokenInvalidated(token)) {
+            return null; // Token is invalidated
+        }
+
         Claims claims = Jwts.parserBuilder() //uses the jwt class from the jjwt library to parse and validate the JWT
                 .setSigningKey(getSignInKey()) //sets the sign in let using the getSignInKey method
                 .build()//builds the parser

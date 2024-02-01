@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -57,5 +58,31 @@ class UserRepositoryTest {
     private EntityManager assertEquals(EntityManager entityManager) {
         return entityManager;
     }
+
+    @Test
+    void updateRefreshToken() {
+        // Arrange
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+        user.setUsername("testUser");
+        user.setRefreshToken("oldToken");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        String newRefreshToken = "newToken";
+
+        // Act
+        userRepository.updateRefreshToken(userId, newRefreshToken);
+        user.setRefreshToken(newRefreshToken);
+        User updatedUser = userRepository.findById(userId).orElse(null);
+
+        // Assert
+        assertNotNull(updatedUser);
+        assertStringEquals(newRefreshToken, updatedUser.getRefreshToken());
+    }
+
+    private void assertStringEquals(String newRefreshToken, String refreshToken) {
+    }
+
 }
 

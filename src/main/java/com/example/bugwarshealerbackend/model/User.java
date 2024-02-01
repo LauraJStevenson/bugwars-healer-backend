@@ -39,6 +39,9 @@ public class User {
         @Column(name = "email", nullable = false, unique = true)
         private String email;
 
+        @Column(name = "refresh_token")
+        private String refreshToken;
+
         @Column(name = "counter", nullable = true)
         private int counter;
 

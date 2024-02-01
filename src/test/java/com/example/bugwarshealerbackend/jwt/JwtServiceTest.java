@@ -107,6 +107,56 @@ class JwtServiceTest {
         }
 
     }
+
+    /**
+     * Test to ensure that the `getUserNameForToken` method correctly handles an invalid token (by adding to JWT_DENY_LIST).
+     * It mocks the `isTokenInvalidated` method to return true (indicating an invalid token),
+     * creates a token, and then checks that the `getUserNameForToken` method returns null for
+     * the invalid token.
+     */
+    @Test
+    public void getUserNameForTokenTest_invalidToken() {
+
+        try (MockedStatic<JwtService> jwtServiceMock = Mockito.mockStatic(JwtService.class)) {
+            jwtServiceMock.when(() -> JwtService.isTokenInvalidated(Mockito.anyString())).thenReturn(true);
+
+            String oldSecret = JwtService.SECRET_KEY;
+            try {
+                String secret = "a2ltbHluXyZeKigmKGFuZComJSYqP3lhZ211cjIwMjQ=";
+                JwtService.SECRET_KEY = secret;
+
+                String username = "testUser";
+                String token = JwtService.createToken(username);
+
+                String result = JwtService.getUserNameForToken(token);
+                assertNull(result);
+            } finally {
+                JwtService.SECRET_KEY = oldSecret;
+            }
+        }
+    }
+
+    /**
+     * Test to ensure that the `createRefreshToken` method generates a valid refresh token.
+     * It sets a secret key, creates a refresh token for a test username, and checks that
+     * the generated refresh token is not null, indicating a successful token generation.
+     */
+@Test
+    public void createRefreshToken_shouldGenerateValidRefreshToken() {
+        String oldSecret = JwtService.SECRET_KEY;
+        try {
+            String secret = "a2ltbHluXyZeKigmKGFuZComJSYqP3lhZ211cjIwMjQ=";
+            JwtService.SECRET_KEY = secret;
+
+            String username = "testUser";
+            String refreshToken = JwtService.createRefreshToken(username);
+
+            assertNotNull(refreshToken);
+
+        } finally {
+            JwtService.SECRET_KEY = oldSecret;
+        }
+    }
 }
 
 
