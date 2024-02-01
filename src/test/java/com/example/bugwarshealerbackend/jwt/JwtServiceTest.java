@@ -116,7 +116,7 @@ class JwtServiceTest {
      */
     @Test
     public void getUserNameForTokenTest_invalidToken() {
-        // Mock the `isTokenInvalidated` method to return true (invalid token)
+
         try (MockedStatic<JwtService> jwtServiceMock = Mockito.mockStatic(JwtService.class)) {
             jwtServiceMock.when(() -> JwtService.isTokenInvalidated(Mockito.anyString())).thenReturn(true);
 
@@ -157,9 +157,6 @@ class JwtServiceTest {
             JwtService.SECRET_KEY = oldSecret;
         }
     }
-
-
-
 }
 
 
