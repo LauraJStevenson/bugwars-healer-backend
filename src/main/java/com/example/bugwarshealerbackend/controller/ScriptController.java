@@ -26,6 +26,11 @@ public class ScriptController {
         return scriptService.getAllScriptsByUserId(userId);
     }
 
+    @GetMapping("/{scriptId}")
+    public Script getScriptById(@PathVariable Long scriptId) {
+        return scriptService.getScriptById(scriptId);
+    }
+
     @PutMapping("/{scriptId}")
     public Script updateScript(@PathVariable Long scriptId, @RequestBody Script scriptDetails) {
         return scriptService.updateScript(scriptId, scriptDetails);

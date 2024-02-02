@@ -24,6 +24,12 @@ public class ScriptService {
         return scriptRepository.findByUserId(userId);
     }
 
+    @Transactional(readOnly = true)
+    public Script getScriptById(Long scriptId) {
+        return scriptRepository.findById(scriptId)
+                .orElseThrow(() -> new RuntimeException("Script not found for this id :: " + scriptId));
+    }
+
     @Transactional
     public Script updateScript(Long scriptId, Script scriptDetails) {
         Script script = scriptRepository.findById(scriptId)
