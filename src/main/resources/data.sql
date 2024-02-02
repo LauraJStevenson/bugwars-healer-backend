@@ -16,13 +16,12 @@ CREATE TABLE users (
 CREATE TABLE scripts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     raw_code TEXT NOT NULL,
-    CONSTRAINT fk_user
-        FOREIGN KEY(user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT unique_user_script_name UNIQUE(user_id, name)
 );
+
 
 
 INSERT INTO users (username, firstname, lastname, password_hash, email, refresh_token, counter, activated)

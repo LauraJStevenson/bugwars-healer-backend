@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -34,13 +37,16 @@ public class User {
         @Column(name = "password_hash", nullable = false)
         private String password;
 
-        @Size(min = 5, max = 50, message = "Email length must be between 5 and 100 characters.")
+        @Size(min = 5, max = 50, message = "Email length must be between 5 and 50 characters.")
         @Email(message = "Email should be valid.")
         @Column(name = "email", nullable = false, unique = true)
         private String email;
 
         @Column(name = "refresh_token")
         private String refreshToken;
+
+        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<Scripts> scripts = new ArrayList<>();
 
         @Column(name = "counter", nullable = true)
         private int counter;
