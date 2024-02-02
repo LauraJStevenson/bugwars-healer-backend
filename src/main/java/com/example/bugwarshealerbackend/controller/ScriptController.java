@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/scripts")
+@RequestMapping("/api/v1/scripts")
 public class ScriptController {
 
     @Autowired
