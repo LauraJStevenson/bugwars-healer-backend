@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @Configuration
 public class SecurityConfig {
 
@@ -36,14 +38,18 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/logout").permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated())
+
+
                 .addFilterBefore(new AuthenticationFilter(userRepository),
                         UsernamePasswordAuthenticationFilter.class)
                 // csrf => Cross-Site Request Forgery
                 .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf .ignoringRequestMatchers("/h2-console/**"));
         ;
         return http.build();
     }
