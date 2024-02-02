@@ -46,7 +46,7 @@ public class User {
         private String refreshToken;
 
         @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-        private List<Scripts> scripts = new ArrayList<>();
+        private List<Script> scripts = new ArrayList<>();
 
         @Column(name = "counter", nullable = true)
         private int counter;
