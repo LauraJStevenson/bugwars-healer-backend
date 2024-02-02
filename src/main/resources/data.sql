@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS scripts;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -11,6 +12,18 @@ CREATE TABLE users (
     counter INTEGER,
     activated BOOLEAN
 );
+
+CREATE TABLE scripts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    raw_code TEXT NOT NULL,
+    CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
 
 INSERT INTO users (username, firstname, lastname, password_hash, email, refresh_token, counter, activated)
 VALUES
