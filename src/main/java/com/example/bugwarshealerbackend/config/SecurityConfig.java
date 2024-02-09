@@ -38,7 +38,6 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/logout").permitAll()
@@ -51,7 +50,6 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class)
                 // csrf => Cross-Site Request Forgery
                 .csrf(AbstractHttpConfigurer::disable)
-                .csrf(csrf -> csrf .ignoringRequestMatchers("/h2-console/**"));
         ;
         return http.build();
     }

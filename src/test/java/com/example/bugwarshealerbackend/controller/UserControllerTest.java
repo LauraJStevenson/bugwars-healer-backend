@@ -1,6 +1,7 @@
 package com.example.bugwarshealerbackend.controller;
 
 import com.example.bugwarshealerbackend.config.SecurityConfig;
+import com.example.bugwarshealerbackend.config.TestSecurityConfig;
 import com.example.bugwarshealerbackend.exceptions.ResourceNotFoundException;
 import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.User;
@@ -36,11 +37,12 @@ import static java.lang.Boolean.FALSE;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.springframework.test.context.ActiveProfiles;
 
-
+@ActiveProfiles("test")
+@Import(TestSecurityConfig.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(SecurityConfig.class)
 class UserControllerTest {
 
     @Autowired

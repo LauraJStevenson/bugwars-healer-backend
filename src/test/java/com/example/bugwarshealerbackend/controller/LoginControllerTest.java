@@ -7,7 +7,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 class LoginControllerTest {
 
 //    @Test

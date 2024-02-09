@@ -17,6 +17,9 @@ import static com.example.bugwarshealerbackend.jwt.JwtService.*;
 import static org.aspectj.bridge.Version.getTime;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.springframework.test.context.ActiveProfiles;
+
+@ActiveProfiles("test")
 class JwtServiceTest {
     @Test
     public void test() {
