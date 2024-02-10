@@ -41,7 +41,7 @@ public class UserController {
                                            @RequestBody User userDetails) throws ResourceNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        // If statements are needed to allow partial updates.
+        // If statements are needed to allow partial updates. In the future, this should be converted to a Patch.
 
         if (userDetails.getUsername() != null) {
             user.setUsername(userDetails.getUsername());
