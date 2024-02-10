@@ -2,6 +2,8 @@ package com.example.bugwarshealerbackend.controller;
 
 import com.example.bugwarshealerbackend.config.SecurityConfig;
 import com.example.bugwarshealerbackend.config.TestSecurityConfig;
+import com.example.bugwarshealerbackend.dto.BaseResponse;
+import com.example.bugwarshealerbackend.dto.UserResponse;
 import com.example.bugwarshealerbackend.exceptions.ResourceNotFoundException;
 import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.User;
@@ -96,11 +98,11 @@ class UserControllerTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
         // Act
-        ResponseEntity<User> responseEntity = userController.getUserById(userId);
+        UserResponse responseEntity = userController.getUserById(userId);
 
         // Assert
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(mockUser, responseEntity.getBody());
+        assertEquals(HttpStatus.OK.toString(), responseEntity.getStatus());
+        assertEquals(mockUser, responseEntity.getUser());
 
         // Verify that userRepository's findById method was called with the correct argument
         verify(userRepository, times(1)).findById(userId);
@@ -118,11 +120,11 @@ class UserControllerTest {
         when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        ResponseEntity<User> response = userController.updateUser(userId, userDetails);
+        UserResponse response = userController.updateUser(userId, userDetails);
 
         // Assert
-        assertEquals(200, response.getStatusCodeValue());
-        User updatedUser = response.getBody();
+        assertEquals(HttpStatus.OK.toString(), response.getStatus());
+        User updatedUser = response.getUser();
         assertNotNull(updatedUser);
         assertEquals(userDetails.getUsername(), updatedUser.getUsername());
         assertEquals(userDetails.getFirstname(), updatedUser.getFirstname());
@@ -166,10 +168,9 @@ class UserControllerTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // Call the method
-        Map<String, Boolean> response = userController.deleteUser(userId);
+        BaseResponse response = userController.deleteUser(userId);
 
         // Verify the result
-        assertTrue(response.get("deleted"));
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).delete(user);
     }

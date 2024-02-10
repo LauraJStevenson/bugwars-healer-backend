@@ -1,6 +1,5 @@
 package com.example.bugwarshealerbackend.controller;
 
-import com.example.bugwarshealerbackend.model.User;
 import com.example.bugwarshealerbackend.service.TokenRefreshService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
