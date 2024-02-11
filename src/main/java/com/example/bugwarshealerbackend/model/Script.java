@@ -15,6 +15,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Data
 @NoArgsConstructor
@@ -39,5 +41,17 @@ public class Script {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private User user;
+
+//    // If needed, implement toString manually without including 'user'
+//    @Override
+//    public String toString() {
+//        return "Script{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", rawCode='" + rawCode + '\'' +
+//                '}';
+//    }
 }
