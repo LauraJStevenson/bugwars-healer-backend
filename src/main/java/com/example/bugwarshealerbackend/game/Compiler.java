@@ -3,12 +3,9 @@ package com.example.bugwarshealerbackend.game;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 public class Compiler {
-
     // Deliminator between the label and the command
     public static final String LABEL_DELIM = " ";
-
     public static final Map<String, Integer> COMMANDS = new HashMap<>();
     public static Pattern PATTERN;
     static {

@@ -6,17 +6,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.stereotype.Service;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.UUID;
-
 @Service
 public class JwtService {
-
     public static String ISSUER = "com.example.bugwarsbackend";
     static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
 

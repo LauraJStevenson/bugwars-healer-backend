@@ -12,15 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "scripts")
 public class Script {
@@ -44,14 +41,4 @@ public class Script {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private User user;
-
-//    // If needed, implement toString manually without including 'user'
-//    @Override
-//    public String toString() {
-//        return "Script{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", rawCode='" + rawCode + '\'' +
-//                '}';
-//    }
 }
