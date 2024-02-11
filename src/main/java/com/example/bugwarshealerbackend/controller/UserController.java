@@ -8,7 +8,10 @@ import com.example.bugwarshealerbackend.model.User;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.ServerErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.TransactionSystemException;
@@ -77,9 +80,9 @@ public class UserController {
                 userResponse.setErrorMessage(exception.getMessage());
                 userResponse.setStatus(HttpStatus.BAD_REQUEST.toString());
 
-                Throwable applicationException2 = exception.getMostSpecificCause();
-                if(applicationException2.getClass()==ConstraintViolationException.class){
-                    ConstraintViolationException constraintViolationException = (ConstraintViolationException) applicationException2;
+                Throwable cause = exception.getMostSpecificCause();
+                if(cause.getClass()==ConstraintViolationException.class){
+                    ConstraintViolationException constraintViolationException = (ConstraintViolationException) cause;
                     Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
                     String errorMsj = "Can not update user do to following violations: ";
                     for(ConstraintViolation<?> violation : violations) {
@@ -100,11 +103,30 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
-    public User createUser(@Valid @RequestBody User user) {
+    public UserResponse createUser(@Valid @RequestBody User user) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String encryptedPwd = bcrypt.encode(user.getPassword());
         user.setPassword(encryptedPwd);
-        return userRepository.save(user);
+        try {
+            return new UserResponse(userRepository.save(user)) ;
+        }catch (DataIntegrityViolationException exception) {
+            UserResponse userResponse = new UserResponse(null);
+            userResponse.setErrorMessage("unknown error");
+
+            Throwable cause = exception.getMostSpecificCause();
+            System.out.println(cause.getClass());
+            if(cause.getClass()== PSQLException.class){
+                PSQLException psqlException = (PSQLException) cause;
+                // Keeping this to improve validation message back to frontend in the future
+                //ServerErrorMessage serverErrorMessage = psqlException.getServerErrorMessage();
+                //if(serverErrorMessage != null) {
+                //   System.out.println(serverErrorMessage.getMessage());
+                //}
+
+                userResponse.setErrorMessage("Can not create user because: " + psqlException.getMessage());
+            }
+            return userResponse;
+        }
     }
 
     @DeleteMapping("/users/{id}")

@@ -146,15 +146,13 @@ class UserControllerTest {
         when(userRepository.save(any(User.class))).thenReturn((inputUser));
 
         //Act
-        User createdUser = userController.createUser(inputUser);
+        UserResponse createdUser = userController.createUser(inputUser);
 
         //Assert
         assertNotNull(createdUser);
-        assertEquals("testUser", createdUser.getUsername());
+        assertEquals("testUser", createdUser.getUser().getUsername());
 
         verify(userRepository, times(1)).save(any(User.class));
-
-
     }
 
     @Test
