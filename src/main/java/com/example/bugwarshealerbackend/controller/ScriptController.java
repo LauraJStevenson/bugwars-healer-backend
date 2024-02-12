@@ -52,16 +52,29 @@ public class ScriptController {
     }
 
     /**
-     * Update a script.
+     * Partially update a script.
      *
      * @param scriptId      the ID of the script to update
-     * @param scriptDetails the new details of the script
+     * @param scriptDetails the script details to update
      * @return the updated script
      */
-    @PutMapping("/{scriptId}")
-    public Script updateScript(@PathVariable Long scriptId, @RequestBody Script scriptDetails) {
-        return scriptService.updateScript(scriptId, scriptDetails);
+    @PatchMapping("/{scriptId}")
+    public ResponseEntity<Script> updateScript(@PathVariable Long scriptId, @RequestBody Script scriptDetails) {
+        Script existingScript = scriptService.getScriptById(scriptId);
+
+        // Only update fields that are present in the request
+        if (scriptDetails.getName() != null) {
+            existingScript.setName(scriptDetails.getName());
+        }
+
+        if (scriptDetails.getRawCode() != null) {
+            existingScript.setRawCode(scriptDetails.getRawCode());
+        }
+
+        Script updatedScript = scriptService.updateScript(scriptId, scriptDetails); // Assume this method accepts a Script object and updates it
+        return ResponseEntity.ok(updatedScript);
     }
+
 
     /**
      * Delete a script by its ID.

@@ -47,12 +47,10 @@ public class UserController {
                                            @RequestBody User userDetails) throws ResourceNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()) {
-            // If statements are needed to allow partial updates.
+            // If statements are needed to allow partial updates. Will convert to @PatchMapping at later time.
+
             User currentUser = user.get();
 
-            if (userDetails.getUsername() != null) {
-                currentUser.setUsername(userDetails.getUsername());
-            }
 
             if (userDetails.getFirstname() != null) {
                 currentUser.setFirstname(userDetails.getFirstname());

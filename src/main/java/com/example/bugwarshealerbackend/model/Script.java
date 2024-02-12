@@ -13,6 +13,10 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+
+
 @Data
 @Entity
 @Table(name = "scripts")
@@ -34,5 +38,7 @@ public class Script {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private User user;
 }

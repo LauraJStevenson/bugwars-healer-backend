@@ -3,9 +3,7 @@ package com.example.bugwarshealerbackend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +42,8 @@ public class User {
         private String refreshToken;
 
         @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+        @ToString.Exclude
+        @EqualsAndHashCode.Exclude
         private List<Script> scripts = new ArrayList<>();
 
         @Column(name = "counter", nullable = true)
