@@ -1,5 +1,6 @@
 package com.example.bugwarshealerbackend.service;
 
+import com.example.bugwarshealerbackend.dto.ScriptDto;
 import com.example.bugwarshealerbackend.jpa.ScriptRepository;
 import com.example.bugwarshealerbackend.model.Script;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class ScriptService {
 
     /**
      * Updates an existing script identified by the given ID with new details.
+     * Only non-null fields in scriptDetails will be updated.
      *
      * @param scriptId      The ID of the script to update.
      * @param scriptDetails The new details to be applied to the script.
@@ -55,11 +57,18 @@ public class ScriptService {
      * @throws RuntimeException if no script is found for the provided ID.
      */
     @Transactional
-    public Script updateScript(Long scriptId, Script scriptDetails) {
+    public Script updateScript(Long scriptId, ScriptDto scriptDetails) {
         Script script = scriptRepository.findById(scriptId)
                 .orElseThrow(() -> new RuntimeException("Script not found for this id :: " + scriptId));
-        script.setName(scriptDetails.getName());
-        script.setRawCode(scriptDetails.getRawCode());
+
+        if (scriptDetails.getName() != null) {
+            script.setName(scriptDetails.getName());
+        }
+
+        if (scriptDetails.getRawCode() != null) {
+            script.setRawCode(scriptDetails.getRawCode());
+        }
+
         return scriptRepository.save(script);
     }
 

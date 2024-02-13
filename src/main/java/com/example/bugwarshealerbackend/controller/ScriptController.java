@@ -1,5 +1,6 @@
 package com.example.bugwarshealerbackend.controller;
 
+import com.example.bugwarshealerbackend.dto.ScriptDto;
 import com.example.bugwarshealerbackend.model.Script;
 import com.example.bugwarshealerbackend.service.ScriptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,21 +60,11 @@ public class ScriptController {
      * @return the updated script
      */
     @PatchMapping("/{scriptId}")
-    public ResponseEntity<Script> updateScript(@PathVariable Long scriptId, @RequestBody Script scriptDetails) {
-        Script existingScript = scriptService.getScriptById(scriptId);
-
-        // Only update fields that are present in the request
-        if (scriptDetails.getName() != null) {
-            existingScript.setName(scriptDetails.getName());
-        }
-
-        if (scriptDetails.getRawCode() != null) {
-            existingScript.setRawCode(scriptDetails.getRawCode());
-        }
-
-        Script updatedScript = scriptService.updateScript(scriptId, scriptDetails); // Assume this method accepts a Script object and updates it
+    public ResponseEntity<Script> updateScript(@PathVariable Long scriptId, @RequestBody ScriptDto scriptDetails) {
+        Script updatedScript = scriptService.updateScript(scriptId, scriptDetails);
         return ResponseEntity.ok(updatedScript);
     }
+
 
 
     /**
