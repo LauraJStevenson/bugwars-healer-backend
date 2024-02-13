@@ -49,6 +49,7 @@ public class ScriptService {
 
     /**
      * Updates an existing script identified by the given ID with new details.
+     * Only non-null fields in scriptDetails will be updated.
      *
      * @param scriptId      The ID of the script to update.
      * @param scriptDetails The new details to be applied to the script.
@@ -56,6 +57,7 @@ public class ScriptService {
      * @throws RuntimeException if no script is found for the provided ID.
      */
     @Transactional
+<<<<<<< Updated upstream
     public Script updateScript(Long scriptId, ScriptDto scriptDetails) {
         Script script = scriptRepository.findById(scriptId)
                 .orElseThrow(() -> new RuntimeException("Script not found for this id :: " + scriptId));
@@ -74,6 +76,24 @@ public class ScriptService {
 
 
 
+=======
+    public Script updateScript(Long scriptId, Script scriptDetails) {
+        Script existingScript = scriptRepository.findById(scriptId)
+                .orElseThrow(() -> new RuntimeException("Script not found for this id :: " + scriptId));
+
+        if (scriptDetails.getName() != null) {
+            existingScript.setName(scriptDetails.getName());
+        }
+
+        if (scriptDetails.getRawCode() != null) {
+            existingScript.setRawCode(scriptDetails.getRawCode());
+        }
+
+        return scriptRepository.save(existingScript);
+    }
+
+
+>>>>>>> Stashed changes
     /**
      * Deletes a script identified by the given ID.
      *
