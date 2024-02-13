@@ -57,7 +57,6 @@ public class ScriptService {
      * @throws RuntimeException if no script is found for the provided ID.
      */
     @Transactional
-<<<<<<< Updated upstream
     public Script updateScript(Long scriptId, ScriptDto scriptDetails) {
         Script script = scriptRepository.findById(scriptId)
                 .orElseThrow(() -> new RuntimeException("Script not found for this id :: " + scriptId));
@@ -70,30 +69,9 @@ public class ScriptService {
             script.setRawCode(scriptDetails.getRawCode());
         }
 
-        // Save the updated script
         return scriptRepository.save(script);
     }
 
-
-
-=======
-    public Script updateScript(Long scriptId, Script scriptDetails) {
-        Script existingScript = scriptRepository.findById(scriptId)
-                .orElseThrow(() -> new RuntimeException("Script not found for this id :: " + scriptId));
-
-        if (scriptDetails.getName() != null) {
-            existingScript.setName(scriptDetails.getName());
-        }
-
-        if (scriptDetails.getRawCode() != null) {
-            existingScript.setRawCode(scriptDetails.getRawCode());
-        }
-
-        return scriptRepository.save(existingScript);
-    }
-
-
->>>>>>> Stashed changes
     /**
      * Deletes a script identified by the given ID.
      *

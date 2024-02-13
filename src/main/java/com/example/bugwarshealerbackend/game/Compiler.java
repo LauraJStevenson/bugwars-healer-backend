@@ -27,6 +27,25 @@ public class Compiler {
 
     }
 
+    public static List<String> cleanScript (String script) {
+
+        List<String> result = new ArrayList<>();
+        String[] lines = script.split("\n");
+        for(String line: lines) {
+            String finalLine = line;
+            int hashTagPosition = finalLine.indexOf("#");
+            if (hashTagPosition != -1) {
+                finalLine = finalLine.substring(0, hashTagPosition);
+            }
+            finalLine = finalLine.trim();
+            finalLine = finalLine.replaceAll("\s+", " ");
+            if(!finalLine.isEmpty()) {
+                result.add(finalLine);
+            }
+        }
+        return result;
+    }
+
     public static List<Integer> compile(String script) {
 
         List<Integer> commands = new ArrayList<>();
@@ -34,7 +53,7 @@ public class Compiler {
         List<String> labels = new ArrayList<>();
 
         //gets each line of the scripts
-        String[] lines = script.split("\n");
+        List<String> lines = cleanScript(script);
 
         for(String line: lines) {
 
@@ -74,7 +93,7 @@ public class Compiler {
 
     public static boolean validate(String script) {
 
-        String[] lines = script.split("\n");
+        List<String> lines = cleanScript(script);
         HashSet<String> labelLeft = new HashSet<>();
         List<String> labelRight = new ArrayList<>();
 
