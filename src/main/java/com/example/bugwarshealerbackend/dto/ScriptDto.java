@@ -12,4 +12,11 @@ public class ScriptDto {
         return rawCode;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRawCode(String rawCode) {
+        this.rawCode = rawCode;
+    }
 }
