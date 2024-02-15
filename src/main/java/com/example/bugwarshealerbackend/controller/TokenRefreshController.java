@@ -62,9 +62,6 @@ class TokenResponse {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }
 
 /**
@@ -81,7 +78,4 @@ class ErrorResponse {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -30,6 +30,7 @@ public class User {
         @Column(name = "lastname", nullable = false)
         private String lastname;
 
+        @Size(min = 8, message = "Password must be at least 8 characters long.")
         @Column(name = "password_hash", nullable = false)
         private String password;
 
