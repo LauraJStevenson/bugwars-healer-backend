@@ -53,6 +53,7 @@ public class CompilerTest {
         //Arrange
         String script = """
 # Head Spinner
+:ANOTHER_LABEL
 :START       att
              att  #I'm a comment
              ifFood EAT
@@ -93,6 +94,7 @@ public class CompilerTest {
 
         String script = """
 # Head Spinner
+:ANOTHER_LABEL
 :START       att
              att  #I'm a comment
              ifFood EAT
@@ -194,26 +196,7 @@ goto START""";
         //Assert
         Assert.assertFalse(isValid);
     }
-    @Test
-    public void compiler_inValid_label_defination_lenngth_1() {
-        //Arrange
-        String script = """
-:START
-att
-ifFood EAT
-mov
-rotr
-rotl
-goto START
-:EAT eat
-rotr
-rotl
-goto START""";
-        //Act
-        boolean isValid = Compiler.validate(script);
-        //Assert
-        Assert.assertFalse(isValid);
-    }
+
     @Test
     public void compiler_inValid_label_starts_with_letter() {
         //Arrange
