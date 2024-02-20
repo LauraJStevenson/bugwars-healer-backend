@@ -2,14 +2,12 @@ package com.example.bugwarshealerbackend.controller;
 
 import com.example.bugwarshealerbackend.dto.BaseResponse;
 import com.example.bugwarshealerbackend.dto.UserResponse;
-import com.example.bugwarshealerbackend.exceptions.ResourceNotFoundException;
 import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.User;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.postgresql.util.PSQLException;
-import org.postgresql.util.ServerErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -44,13 +42,11 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     public UserResponse updateUser(@PathVariable(value = "id") Long userId,
-                                           @RequestBody User userDetails) throws ResourceNotFoundException {
+                                           @RequestBody User userDetails) {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()) {
             // If statements are needed to allow partial updates. Will convert to @PatchMapping at later time.
-
             User currentUser = user.get();
-
 
             if (userDetails.getFirstname() != null) {
                 currentUser.setFirstname(userDetails.getFirstname());
@@ -115,12 +111,6 @@ public class UserController {
             System.out.println(cause.getClass());
             if(cause.getClass()== PSQLException.class){
                 PSQLException psqlException = (PSQLException) cause;
-                // Keeping this to improve validation message back to frontend in the future
-                //ServerErrorMessage serverErrorMessage = psqlException.getServerErrorMessage();
-                //if(serverErrorMessage != null) {
-                //   System.out.println(serverErrorMessage.getMessage());
-                //}
-
                 userResponse.setErrorMessage("Can not create user because: " + psqlException.getMessage());
             }
             return userResponse;
