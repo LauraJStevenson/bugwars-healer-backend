@@ -27,8 +27,8 @@ public class Compiler {
 
     }
 
+    //clean empty area and comment
     public static List<String> cleanScript (String script) {
-
         List<String> result = new ArrayList<>();
         String[] lines = script.split("\n");
         for(String line: lines) {
@@ -47,27 +47,24 @@ public class Compiler {
     }
 
     public static List<Integer> compile(String script) {
-
         List<Integer> commands = new ArrayList<>();
         Map<String, Integer> labelToIndexMap = new HashMap<>();
         List<String> labels = new ArrayList<>();
-
         //gets each line of the scripts
         List<String> lines = cleanScript(script);
-
         for(String line: lines) {
-
             //looking label
             if(line.startsWith(":")) {
                 String[] parts = line.split(LABEL_DELIM);
-                String label =  parts[0].substring(1);
+                String label = parts[0].substring(1);
                 int labelIndex = commands.size();
                 labelToIndexMap.put(label, labelIndex);
-
-                //process command
-                String command = parts[1];
-                int compiledCommand = COMMANDS.get(command);
-                commands.add(compiledCommand);
+                if(parts.length == 2) {
+                    //process command
+                    String command = parts[1];
+                    int compiledCommand = COMMANDS.get(command);
+                    commands.add(compiledCommand);
+                }
             } else {
                 //control command
                 if(line.contains(LABEL_DELIM)) {
@@ -100,7 +97,7 @@ public class Compiler {
         for(String line: lines) {
             if(line.startsWith(":")) {
                 String[] parts = line.split(LABEL_DELIM);
-                if(parts.length != 2){
+                if(parts.length > 2){
                     return false;
                 }
                 String label = parts[0].substring(1);
@@ -117,9 +114,11 @@ public class Compiler {
                     return false;
                 }
                 labelLeft.add(label);
-                String command = parts[1];
-                if(!COMMANDS.containsKey(command)){
-                    return false;
+                if(parts.length == 2) {
+                    String command = parts[1];
+                    if(!COMMANDS.containsKey(command)){
+                        return false;
+                    }
                 }
             } else {
                 if(line.contains(LABEL_DELIM)){
