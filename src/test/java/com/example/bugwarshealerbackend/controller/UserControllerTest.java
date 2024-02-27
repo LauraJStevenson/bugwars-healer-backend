@@ -1,175 +1,109 @@
 package com.example.bugwarshealerbackend.controller;
 
-import com.example.bugwarshealerbackend.config.SecurityConfig;
-import com.example.bugwarshealerbackend.config.TestSecurityConfig;
 import com.example.bugwarshealerbackend.dto.BaseResponse;
 import com.example.bugwarshealerbackend.dto.UserResponse;
-import com.example.bugwarshealerbackend.exceptions.ResourceNotFoundException;
-import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.User;
-
-import org.junit.Before;
-
+import com.example.bugwarshealerbackend.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import static org.mockito.ArgumentMatchers.anyString;
-import static java.lang.Boolean.FALSE;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import org.springframework.test.context.ActiveProfiles;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ActiveProfiles("test")
-@Import(TestSecurityConfig.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(UserController.class)
 class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
-    UserRepository userRepository;
-    @Mock
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @InjectMocks
-    private UserController userController;
-
+    @MockBean
+    private UserService userService;
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private ObjectMapper objectMapper;
 
-
-
-    @Before()
-    public void setup()
-    {
-        //Init MockMvc Object and build
+    @BeforeEach
+    void setUp(WebApplicationContext webApplicationContext) {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    void getAllUsers() throws Exception {
-        // Arrange
-        MockitoAnnotations.openMocks(this); // Initialize annotated mocks
+    void getAllUsersTest() throws Exception {
+        User user = new User(1L, "TestUser", "Test", "User", "password", "test@test.com", null, new ArrayList<>(), 0, false);
+        List<User> allUsers = Arrays.asList(user);
 
-        // Mock data and repository method
-        User newUser = new User(1, "Testlaura", "Laura", "Stevenson", "12345", "laura@mail.com", "null", null, 0, FALSE);
-        List<User> userList = List.of(newUser);
+        given(userService.getAllUsers()).willReturn(allUsers);
 
-        when(userRepository.findAll()).thenReturn(userList);
-
-        // Act and Assert
-        List<User> result = userController.getAllUsers();
-        verify(userRepository, times(1)).findAll();
-        assertEquals(userList, result);
-
-    }
-    @Test
-    void getUserByIdTest() throws ResourceNotFoundException {
-        // Arrange
-        Long userId = 1L;
-        User mockUser = new User();
-
-        // Mocking behavior of userRepository
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
-
-        // Act
-        UserResponse responseEntity = userController.getUserById(userId);
-
-        // Assert
-        assertEquals(HttpStatus.OK.toString(), responseEntity.getStatus());
-        assertEquals(mockUser, responseEntity.getUser());
-
-        // Verify that userRepository's findById method was called with the correct argument
-        verify(userRepository, times(1)).findById(userId);
+        mockMvc.perform(get("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username").value(user.getUsername()));
     }
 
-
     @Test
-    void updateUserTest() throws ResourceNotFoundException {
-        // Arrange
-        Long userId = 1L;
-        User userDetails = new User(1, "Testlaura", "Laura", "Stevenson", "12345", "laura@mail.com", "NULL", null, 0, FALSE);
-        User existingUser = new User(2,"TestAshley", "Ashley", "Mical", "45678", "ashley@mail.com", "NULL", null, 0, FALSE);
+    void getUserByIdTest() throws Exception {
+        long userId = 1L;
+        UserResponse userResponse = new UserResponse(new User(1L, "TestUser", "Test", "User", "password", "test@test.com", null, new ArrayList<>(), 0, false));
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-        when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        given(userService.getUserById(userId)).willReturn(userResponse);
 
-        // Act
-        UserResponse response = userController.updateUser(userId, userDetails);
-
-        // Assert
-        assertEquals(HttpStatus.OK.toString(), response.getStatus());
-        User updatedUser = response.getUser();
-        assertNotNull(updatedUser);
-        assertEquals(userDetails.getUsername(), updatedUser.getUsername());
-        assertEquals(userDetails.getFirstname(), updatedUser.getFirstname());
-        assertEquals(userDetails.getLastname(), updatedUser.getLastname());
-        // Add more assertions based on your specific requirements
-
-        // Verify that the save method was called once
-        verify(userRepository, times(1)).save(any());
+        mockMvc.perform(get("/api/v1/users/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.user.username").value(userResponse.getUser().getUsername()));
     }
 
     @Test
     void createUserTest() throws Exception {
-        //Arrange
-        User inputUser = new User();
-        inputUser.setUsername("testUser");
-        inputUser.setPassword("testPassword");
+        User user = new User(0L, "newUser", "New", "User", "P@ssw0rd", "newuser@test.com", null, new ArrayList<>(), 0, false);
+        UserResponse userResponse = new UserResponse(user);
 
-        when(passwordEncoder.encode((anyString()))).thenReturn("encodedPassword");
-        when(userRepository.save(any(User.class))).thenReturn((inputUser));
+        given(userService.createUser(user)).willReturn(userResponse);
 
-        //Act
-        UserResponse createdUser = userController.createUser(inputUser);
-
-        //Assert
-        assertNotNull(createdUser);
-        assertEquals("testUser", createdUser.getUser().getUsername());
-
-        verify(userRepository, times(1)).save(any(User.class));
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.user.username").value(user.getUsername()));
     }
 
     @Test
-    void deleteUserTest() throws ResourceNotFoundException {
-        // Mock data
-        Long userId = 1L;
-        User user = new User();
-        user.setId(userId);
+    void updateUserTest() throws Exception {
+        long userId = 1L;
+        User userDetails = new User(1L, "updatedUser", "Updated", "User", "NewPassword", "updateduser@test.com", null, new ArrayList<>(), 0, true);
+        UserResponse updatedUserResponse = new UserResponse(userDetails);
 
-        // Mock behavior
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        given(userService.updateUser(userId, userDetails)).willReturn(updatedUserResponse);
 
-        // Call the method
-        BaseResponse response = userController.deleteUser(userId);
+        mockMvc.perform(put("/api/v1/users/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userDetails)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.user.username").value(userDetails.getUsername()));
+    }
 
-        // Verify the result
-        verify(userRepository, times(1)).findById(userId);
-        verify(userRepository, times(1)).delete(user);
+    @Test
+    void deleteUserTest() throws Exception {
+        long userId = 1L;
+        BaseResponse baseResponse = new BaseResponse();
+
+        given(userService.deleteUser(userId)).willReturn(baseResponse);
+
+        mockMvc.perform(delete("/api/v1/users/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

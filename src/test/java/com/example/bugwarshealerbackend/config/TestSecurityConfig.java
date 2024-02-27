@@ -24,8 +24,7 @@ public class TestSecurityConfig {
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/h2-console/**").permitAll())
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-                .headers(headers -> headers.frameOptions().disable());
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
 
         return http.build();
     }

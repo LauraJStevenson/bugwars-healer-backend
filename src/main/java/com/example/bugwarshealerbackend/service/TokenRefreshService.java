@@ -14,17 +14,6 @@ public class TokenRefreshService {
     @Autowired
     private JwtService jwtService;
 
-    /**
-     * Generates a new refresh token for a given user and updates it in the user repository.
-     * This method should be used when a new refresh token needs to be issued to the user.
-     *
-     * @param user The user object for whom the refresh token is being generated and stored.
-     */
-    @Transactional
-    public void generateAndStoreRefreshToken(User user) {
-        String refreshToken = jwtService.createRefreshToken(user.getUsername());
-        userRepository.updateRefreshToken(user.getId(), refreshToken);
-    }
 
     /**
      * Validates a given refresh token against a user's stored refresh token.
@@ -39,16 +28,6 @@ public class TokenRefreshService {
         return user != null && user.getRefreshToken().equals(refreshToken);
     }
 
-    /**
-     * Creates a new access token for the given username.
-     * This method is typically called after validating a refresh token to issue a new access token.
-     *
-     * @param username The username for which a new access token is to be created.
-     * @return A new JWT access token for the given username.
-     */
-    public String createNewAccessToken(String username) {
-        return jwtService.createToken(username);
-    }
 
     /**
      * Extracts the username from a given refresh token.
@@ -85,5 +64,9 @@ public class TokenRefreshService {
         } else {
             throw new SecurityException("Invalid refresh token");
         }
+    }
+
+    public void setJwtService(JwtService jwtService) {
+        this.jwtService = jwtService;
     }
 }
