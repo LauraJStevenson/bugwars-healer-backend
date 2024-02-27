@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 class UserRepositoryTest {
-    @Autowired
+    @MockBean
     private UserRepository userRepository = mock(UserRepository.class);
 
     @MockBean
