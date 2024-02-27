@@ -90,7 +90,7 @@ public class JwtService {
 
     public static String getUserNameForToken(String token) {
 
-        if (isTokenInvalidated(token)) {
+        if (token == null || isTokenInvalidated(token)) {
             return null; // Token is invalidated
         }
 

@@ -65,4 +65,8 @@ public class TokenRefreshService {
             throw new SecurityException("Invalid refresh token");
         }
     }
+
+    public void setJwtService(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 }
