@@ -1,0 +1,21 @@
+XXXXXXXXXXXXXXXXXXXXX
+XXXXXXXX     XXXXXXXX
+XXXXX           XXXXX
+XXXX   1     2   XXXX
+XXX  1         2  XXX
+XX  1           2  XX
+XX     XXXXXXX     XX
+XX                 XX
+X   XX    a    XX   X
+X   XX         XX   X
+X   XX a     a XX   X
+X   XX         XX   X
+X   XX    a    XX   X
+XX                 XX
+XX     XXXXXXX     XX
+XX  3           4  XX
+XXX  3         4  XXX
+XXXX   3     4   XXXX
+XXXXX           XXXXX
+XXXXXXXX     XXXXXXXX
+XXXXXXXXXXXXXXXXXXXXX
