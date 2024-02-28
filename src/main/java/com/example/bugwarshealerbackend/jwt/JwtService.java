@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class JwtService {
     public static String ISSUER = "com.example.bugwarsbackend";
-    static String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
+    public static  String SECRET_KEY = System.getenv("JWT_TOKEN_GENERATED");
 
     // 1hour is 3600 * 1000 milliseconds.
     public static final int EXPIRY_IN_MILLISECOND = 3600 * 1000;
@@ -48,7 +48,7 @@ public class JwtService {
         return createToken(username, ISSUER);
     }
 
-    static String createToken(String username, String issuer)
+    public static String createToken(String username, String issuer)
     {
         Date now = new Date();
 
