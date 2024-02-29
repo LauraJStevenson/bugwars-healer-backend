@@ -11,6 +11,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("api/v1/game")
 public class GameController {
+
     @PostMapping("/compile")
     public CompiledScriptResponse compile(@Valid @RequestBody CompileRequest compileRequest) {
         String script = compileRequest.getScript();
