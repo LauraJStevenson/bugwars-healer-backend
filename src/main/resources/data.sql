@@ -1,6 +1,10 @@
+BEGIN;
+
 DROP TABLE IF EXISTS scripts;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS map;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -29,11 +33,40 @@ CREATE TABLE map (
     serialization VARCHAR (1000) NOT NULL
 );
 
+--Insert test user accounts--
 INSERT INTO users (username, firstname, lastname, password_hash, email, refresh_token, counter, activated)
 VALUES
-('TestLaura', 'Laura', 'Stevenson', '12345', 'laura@mail.com', NULL, 0, FALSE),
-('TestAshley', 'Ashley', 'Mical', '45678', 'ashley@mail.com', NULL, 0, FALSE),
-('TestYagmur', 'Yagmur', 'YagmurM', '123456', 'yagmur@yagmur.com', NULL, 0, FALSE);
+('TestLaura', 'Laura', 'LauraS', crypt('Test1234', gen_salt('bf')), 'laura@mail.com', NULL, 0, FALSE),
+('TestAshley', 'Ashley', 'AshleyM', crypt('Test1234', gen_salt('bf')), 'ashley@mail.com', NULL, 0, FALSE),
+('TestYagmur', 'Yagmur', 'YagmurM', crypt('Test1234', gen_salt('bf')), 'yagmur@yagmur.com', NULL, 0, FALSE),
+('TestKimlyn', 'Kimlyn', 'KimlynD', crypt('Test1234', gen_salt('bf')), 'kimlyn@mail.com', NULL, 0, FALSE),
+('TestViv', 'Viv', 'VivV', crypt('Test1234', gen_salt('bf')), 'viv@mail.com', NULL, 0, FALSE),
+('TestSam', 'Sam', 'SamB', crypt('Test1234', gen_salt('bf')), 'sam@mail.com', NULL, 0, FALSE);
+
+--Insert test scripts for each test user--
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script1', 'Test'
+FROM users WHERE username = 'TestLaura';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script2', 'Test'
+FROM users WHERE username = 'TestAshley';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script3', 'Test'
+FROM users WHERE username = 'TestYagmur';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script4', 'Test'
+FROM users WHERE username = 'TestKimlyn';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script5', 'Test'
+FROM users WHERE username = 'TestViv';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script6', 'Test'
+FROM users WHERE username = 'TestSam';
 
 INSERT INTO map (name, serialization)
 VALUES
@@ -43,3 +76,4 @@ VALUES
 ('arena', E'XXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX     XXXXXXXX\nXXXXX           XXXXX\nXXXX   a     b   XXXX\nXXX  a         b  XXX\nXX  a           b  XX\nXX     XXXXXXX     XX\nXX                 XX\nX   XX    f    XX   X\nX   XX         XX   X\nX   XX f     f XX   X\nX   XX         XX   X\nX   XX    f    XX   X\nXX                 XX\nXX     XXXXXXX     XX\nXX  c           d  XX\nXXX  c         d  XXX\nXXXX   c     d   XXXX\nXXXXX           XXXXX\nXXXXXXXX     XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXX');
 
 
+COMMIT;
