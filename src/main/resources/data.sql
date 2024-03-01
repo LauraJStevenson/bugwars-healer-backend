@@ -1,3 +1,5 @@
+BEGIN;
+
 DROP TABLE IF EXISTS scripts;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS map;
@@ -42,221 +44,28 @@ VALUES
 ('TestSam', 'Sam', 'SamB', crypt('Test1234', gen_salt('bf')), 'sam@mail.com', NULL, 0, FALSE);
 
 --Insert test scripts for each test user--
--- Repeat the below INSERT INTO scripts block for each user with the appropriate modifications
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script1', $$
-:Start
-  ifEnemy
-    att # Attack if there is an enemy
-  ifAlly
-    noop # Do nothing if there is an ally
-  ifFood
-    eat # Eat if there is food
-  ifEmpty
-    mov # Move forward if the space is empty
-  ifWall
-    rotr # Rotate right if there's a wall
-
-:FindFood
-  ifFood
-    eat # Eat if there is food
-  else
-    mov # Move forward if no food is detected
-
-:AvoidEnemy
-  ifEnemy
-    rotr # Rotate right if there is an enemy
-  else
-    mov # Move forward if no enemy is detected
-
-:Explore
-  mov # Move forward to explore
-  ifWall
-    rotl # Rotate left if there's a wall
-
-:End
-  noop # End of script, do nothing
-$$
+SELECT id, 'Script1', 'Test'
 FROM users WHERE username = 'TestLaura';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script2', $$
-:Start
-  ifEnemy
-    att # Attack if there is an enemy
-  ifAlly
-    noop # Do nothing if there is an ally
-  ifFood
-    eat # Eat if there is food
-  ifEmpty
-    mov # Move forward if the space is empty
-  ifWall
-    rotr # Rotate right if there's a wall
-
-:FindFood
-  ifFood
-    eat # Eat if there is food
-  else
-    mov # Move forward if no food is detected
-
-:AvoidEnemy
-  ifEnemy
-    rotr # Rotate right if there is an enemy
-  else
-    mov # Move forward if no enemy is detected
-
-:Explore
-  mov # Move forward to explore
-  ifWall
-    rotl # Rotate left if there's a wall
-
-:End
-  noop # End of script, do nothing
-$$
+SELECT id, 'Script2', 'Test'
 FROM users WHERE username = 'TestAshley';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script3', $$
-:Start
-  ifEnemy
-    att # Attack if there is an enemy
-  ifAlly
-    noop # Do nothing if there is an ally
-  ifFood
-    eat # Eat if there is food
-  ifEmpty
-    mov # Move forward if the space is empty
-  ifWall
-    rotr # Rotate right if there's a wall
-
-:FindFood
-  ifFood
-    eat # Eat if there is food
-  else
-    mov # Move forward if no food is detected
-
-:AvoidEnemy
-  ifEnemy
-    rotr # Rotate right if there is an enemy
-  else
-    mov # Move forward if no enemy is detected
-
-:Explore
-  mov # Move forward to explore
-  ifWall
-    rotl # Rotate left if there's a wall
-
-:End
-  noop # End of script, do nothing
-$$
+SELECT id, 'Script3', 'Test'
 FROM users WHERE username = 'TestYagmur';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script4', $$
-:Start
-  ifEnemy
-    att # Attack if there is an enemy
-  ifAlly
-    noop # Do nothing if there is an ally
-  ifFood
-    eat # Eat if there is food
-  ifEmpty
-    mov # Move forward if the space is empty
-  ifWall
-    rotr # Rotate right if there's a wall
-
-:FindFood
-  ifFood
-    eat # Eat if there is food
-  else
-    mov # Move forward if no food is detected
-
-:AvoidEnemy
-  ifEnemy
-    rotr # Rotate right if there is an enemy
-  else
-    mov # Move forward if no enemy is detected
-
-:Explore
-  mov # Move forward to explore
-  ifWall
-    rotl # Rotate left if there's a wall
-
-:End
-  noop # End of script, do nothing
-$$
+SELECT id, 'Script4', 'Test'
 FROM users WHERE username = 'TestKimlyn';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script5', $$
-:Start
-  ifEnemy
-    att # Attack if there is an enemy
-  ifAlly
-    noop # Do nothing if there is an ally
-  ifFood
-    eat # Eat if there is food
-  ifEmpty
-    mov # Move forward if the space is empty
-  ifWall
-    rotr # Rotate right if there's a wall
-
-:FindFood
-  ifFood
-    eat # Eat if there is food
-  else
-    mov # Move forward if no food is detected
-
-:AvoidEnemy
-  ifEnemy
-    rotr # Rotate right if there is an enemy
-  else
-    mov # Move forward if no enemy is detected
-
-:Explore
-  mov # Move forward to explore
-  ifWall
-    rotl # Rotate left if there's a wall
-
-:End
-  noop # End of script, do nothing
-$$
+SELECT id, 'Script5', 'Test'
 FROM users WHERE username = 'TestViv';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script6', $$
-:Start
-  ifEnemy
-    att # Attack if there is an enemy
-  ifAlly
-    noop # Do nothing if there is an ally
-  ifFood
-    eat # Eat if there is food
-  ifEmpty
-    mov # Move forward if the space is empty
-  ifWall
-    rotr # Rotate right if there's a wall
-
-:FindFood
-  ifFood
-    eat # Eat if there is food
-  else
-    mov # Move forward if no food is detected
-
-:AvoidEnemy
-  ifEnemy
-    rotr # Rotate right if there is an enemy
-  else
-    mov # Move forward if no enemy is detected
-
-:Explore
-  mov # Move forward to explore
-  ifWall
-    rotl # Rotate left if there's a wall
-
-:End
-  noop # End of script, do nothing
-$$
+SELECT id, 'Script6', 'Test'
 FROM users WHERE username = 'TestSam';
 
 INSERT INTO map (name, serialization)
@@ -267,3 +76,4 @@ VALUES
 ('arena', E'XXXXXXXXXXXXXXXXXXXXX\nXXXXXXXX     XXXXXXXX\nXXXXX           XXXXX\nXXXX   1     2   XXXX\nXXX  1         2  XXX\nXX  1           2  XX\nXX     XXXXXXX     XX\nXX                 XX\nX   XX    a    XX   X\nX   XX         XX   X\nX   XX a     a XX   X\nX   XX         XX   X\nX   XX    a    XX   X\nXX                 XX\nXX     XXXXXXX     XX\nXX  3           4  XX\nXXX  3         4  XXX\nXXXX   3     4   XXXX\nXXXXX           XXXXX\nXXXXXXXX     XXXXXXXX\nXXXXXXXXXXXXXXXXXXXXX');
 
 
+COMMIT;
