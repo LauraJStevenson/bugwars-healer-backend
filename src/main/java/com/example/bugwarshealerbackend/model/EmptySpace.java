@@ -7,6 +7,6 @@ public class EmptySpace extends Cell{
     }
     @Override
     public Cell clone() {
-        return new EmptySpace(this.getX(), this.getY());
+        return new EmptySpace(this.getRow(), this.getColumn());
     }
 }

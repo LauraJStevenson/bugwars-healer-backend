@@ -7,6 +7,6 @@ public class Wall extends Cell{
     }
     @Override
     public Cell clone() {
-        return new Wall(this.getX(), this.getY());
+        return new Wall(this.getRow(), this.getColumn());
     }
 }
