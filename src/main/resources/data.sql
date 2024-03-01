@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS scripts;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS map;
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(15) NOT NULL UNIQUE,
@@ -29,11 +31,233 @@ CREATE TABLE map (
     serialization VARCHAR (1000) NOT NULL
 );
 
+--Insert test user accounts--
 INSERT INTO users (username, firstname, lastname, password_hash, email, refresh_token, counter, activated)
 VALUES
-('TestLaura', 'Laura', 'Stevenson', '12345', 'laura@mail.com', NULL, 0, FALSE),
-('TestAshley', 'Ashley', 'Mical', '45678', 'ashley@mail.com', NULL, 0, FALSE),
-('TestYagmur', 'Yagmur', 'YagmurM', '123456', 'yagmur@yagmur.com', NULL, 0, FALSE);
+('TestLaura', 'Laura', 'LauraS', crypt('Test1234', gen_salt('bf')), 'laura@mail.com', NULL, 0, FALSE),
+('TestAshley', 'Ashley', 'AshleyM', crypt('Test1234', gen_salt('bf')), 'ashley@mail.com', NULL, 0, FALSE),
+('TestYagmur', 'Yagmur', 'YagmurM', crypt('Test1234', gen_salt('bf')), 'yagmur@yagmur.com', NULL, 0, FALSE),
+('TestKimlyn', 'Kimlyn', 'KimlynD', crypt('Test1234', gen_salt('bf')), 'kimlyn@mail.com', NULL, 0, FALSE),
+('TestViv', 'Viv', 'VivV', crypt('Test1234', gen_salt('bf')), 'viv@mail.com', NULL, 0, FALSE),
+('TestSam', 'Sam', 'SamB', crypt('Test1234', gen_salt('bf')), 'sam@mail.com', NULL, 0, FALSE);
+
+--Insert test scripts for each test user--
+-- Repeat the below INSERT INTO scripts block for each user with the appropriate modifications
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script1', $$
+:Start
+  ifEnemy
+    att # Attack if there is an enemy
+  ifAlly
+    noop # Do nothing if there is an ally
+  ifFood
+    eat # Eat if there is food
+  ifEmpty
+    mov # Move forward if the space is empty
+  ifWall
+    rotr # Rotate right if there's a wall
+
+:FindFood
+  ifFood
+    eat # Eat if there is food
+  else
+    mov # Move forward if no food is detected
+
+:AvoidEnemy
+  ifEnemy
+    rotr # Rotate right if there is an enemy
+  else
+    mov # Move forward if no enemy is detected
+
+:Explore
+  mov # Move forward to explore
+  ifWall
+    rotl # Rotate left if there's a wall
+
+:End
+  noop # End of script, do nothing
+$$
+FROM users WHERE username = 'TestLaura';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script2', $$
+:Start
+  ifEnemy
+    att # Attack if there is an enemy
+  ifAlly
+    noop # Do nothing if there is an ally
+  ifFood
+    eat # Eat if there is food
+  ifEmpty
+    mov # Move forward if the space is empty
+  ifWall
+    rotr # Rotate right if there's a wall
+
+:FindFood
+  ifFood
+    eat # Eat if there is food
+  else
+    mov # Move forward if no food is detected
+
+:AvoidEnemy
+  ifEnemy
+    rotr # Rotate right if there is an enemy
+  else
+    mov # Move forward if no enemy is detected
+
+:Explore
+  mov # Move forward to explore
+  ifWall
+    rotl # Rotate left if there's a wall
+
+:End
+  noop # End of script, do nothing
+$$
+FROM users WHERE username = 'TestAshley';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script3', $$
+:Start
+  ifEnemy
+    att # Attack if there is an enemy
+  ifAlly
+    noop # Do nothing if there is an ally
+  ifFood
+    eat # Eat if there is food
+  ifEmpty
+    mov # Move forward if the space is empty
+  ifWall
+    rotr # Rotate right if there's a wall
+
+:FindFood
+  ifFood
+    eat # Eat if there is food
+  else
+    mov # Move forward if no food is detected
+
+:AvoidEnemy
+  ifEnemy
+    rotr # Rotate right if there is an enemy
+  else
+    mov # Move forward if no enemy is detected
+
+:Explore
+  mov # Move forward to explore
+  ifWall
+    rotl # Rotate left if there's a wall
+
+:End
+  noop # End of script, do nothing
+$$
+FROM users WHERE username = 'TestYagmur';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script4', $$
+:Start
+  ifEnemy
+    att # Attack if there is an enemy
+  ifAlly
+    noop # Do nothing if there is an ally
+  ifFood
+    eat # Eat if there is food
+  ifEmpty
+    mov # Move forward if the space is empty
+  ifWall
+    rotr # Rotate right if there's a wall
+
+:FindFood
+  ifFood
+    eat # Eat if there is food
+  else
+    mov # Move forward if no food is detected
+
+:AvoidEnemy
+  ifEnemy
+    rotr # Rotate right if there is an enemy
+  else
+    mov # Move forward if no enemy is detected
+
+:Explore
+  mov # Move forward to explore
+  ifWall
+    rotl # Rotate left if there's a wall
+
+:End
+  noop # End of script, do nothing
+$$
+FROM users WHERE username = 'TestKimlyn';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script5', $$
+:Start
+  ifEnemy
+    att # Attack if there is an enemy
+  ifAlly
+    noop # Do nothing if there is an ally
+  ifFood
+    eat # Eat if there is food
+  ifEmpty
+    mov # Move forward if the space is empty
+  ifWall
+    rotr # Rotate right if there's a wall
+
+:FindFood
+  ifFood
+    eat # Eat if there is food
+  else
+    mov # Move forward if no food is detected
+
+:AvoidEnemy
+  ifEnemy
+    rotr # Rotate right if there is an enemy
+  else
+    mov # Move forward if no enemy is detected
+
+:Explore
+  mov # Move forward to explore
+  ifWall
+    rotl # Rotate left if there's a wall
+
+:End
+  noop # End of script, do nothing
+$$
+FROM users WHERE username = 'TestViv';
+
+INSERT INTO scripts (user_id, name, raw_code)
+SELECT id, 'Script6', $$
+:Start
+  ifEnemy
+    att # Attack if there is an enemy
+  ifAlly
+    noop # Do nothing if there is an ally
+  ifFood
+    eat # Eat if there is food
+  ifEmpty
+    mov # Move forward if the space is empty
+  ifWall
+    rotr # Rotate right if there's a wall
+
+:FindFood
+  ifFood
+    eat # Eat if there is food
+  else
+    mov # Move forward if no food is detected
+
+:AvoidEnemy
+  ifEnemy
+    rotr # Rotate right if there is an enemy
+  else
+    mov # Move forward if no enemy is detected
+
+:Explore
+  mov # Move forward to explore
+  ifWall
+    rotl # Rotate left if there's a wall
+
+:End
+  noop # End of script, do nothing
+$$
+FROM users WHERE username = 'TestSam';
 
 INSERT INTO map (name, serialization)
 VALUES
