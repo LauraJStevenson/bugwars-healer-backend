@@ -18,7 +18,7 @@ public class Bug extends Cell{
 
     @Override
     public Cell clone() {
-        return new Bug(this.getX(), this.getY());
+        return new Bug(this.getRow(), this.getColumn());
     }
 
     public void execute(Cell[][] map, int tick) {
@@ -30,38 +30,38 @@ public class Bug extends Cell{
             case 10 :
                 Cell destination = null;
                 switch (this.direction) {
-                    case 'N' :
-                        if(this.getY() != 0) {
-                            destination = map[this.getX()][this.getY()-1];
-                        }
-                        break;
-                    case 'S' :
-                        if(this.getY() != map.length -1) {
-                            destination = map[this.getX()][this.getY()+1];
-                        }
-                        break;
                     case 'W' :
-                        if(this.getX() != 0) {
-                            destination = map[this.getX()-1][this.getY()];
+                        if(this.getColumn() != 0) {
+                            destination = map[this.getRow()][this.getColumn()-1];
                         }
                         break;
                     case 'E' :
-                        if(this.getX() != map[this.getX()].length -1) {
-                            destination = map[this.getX()+1][this.getY()];
+                        if(this.getColumn() != map.length -1) {
+                            destination = map[this.getRow()][this.getColumn()+1];
+                        }
+                        break;
+                    case 'N' :
+                        if(this.getRow() != 0) {
+                            destination = map[this.getRow()-1][this.getColumn()];
+                        }
+                        break;
+                    case 'S' :
+                        if(this.getRow() != map[this.getRow()].length -1) {
+                            destination = map[this.getRow()+1][this.getColumn()];
                         }
                         break;
                 }
                 if(destination != null && destination instanceof EmptySpace) {
                     //switch the places of the object references for the bug and empty space
-                    map[destination.getX()][destination.getY()] = this;
-                    map[this.getX()][this.getY()] = destination;
+                    map[destination.getRow()][destination.getColumn()] = this;
+                    map[this.getRow()][this.getColumn()] = destination;
                     //update the internal locations of the bug and the empty spaces
-                    int destinationX = destination.getX();
-                    int destinationY = destination.getY();
-                    destination.setX(this.getX());
-                    destination.setY(this.getY());
-                    this.setX(destinationX);
-                    this.setY(destinationY);
+                    int destinationX = destination.getRow();
+                    int destinationY = destination.getColumn();
+                    destination.setRow(this.getRow());
+                    destination.setColumn(this.getColumn());
+                    this.setRow(destinationX);
+                    this.setColumn(destinationY);
                 }
         }
     }

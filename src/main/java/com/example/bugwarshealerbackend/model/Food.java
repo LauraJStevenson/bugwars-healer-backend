@@ -8,6 +8,6 @@ public class Food extends Cell{
 
     @Override
     public Cell clone() {
-        return new Food(this.getX(),this.getY());
+        return new Food(this.getRow(),this.getColumn());
     }
 }
