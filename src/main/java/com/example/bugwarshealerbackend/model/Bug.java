@@ -1,6 +1,10 @@
 package com.example.bugwarshealerbackend.model;
 
+import lombok.Getter;
+
 public class Bug extends Cell{
+
+    @Getter
     private char direction;
 
     public Bug (int x, int y) {
@@ -63,6 +67,33 @@ public class Bug extends Cell{
                     this.setRow(destinationX);
                     this.setColumn(destinationY);
                 }
+            case 11 :
+                if(direction == 'N') {
+                    this.direction = 'E';
+                } else if(direction == 'E') {
+                    this.direction = 'S';
+                } else if(direction == 'S') {
+                    this.direction = 'W';
+                } else if(direction == 'W') {
+                    this.direction = 'N';
+                }
+                break;
+            case 12:
+                if(direction == 'N') {
+                    this.direction = 'W';
+                } else if(direction == 'W') {
+                    this.direction = 'S';
+                } else if(direction == 'S') {
+                    this.direction = 'E';
+                } else if(direction == 'E') {
+                    this.direction = 'N';
+                }
+                break;
+            case 13:
+
+                break;
+
         }
     }
+
 }
