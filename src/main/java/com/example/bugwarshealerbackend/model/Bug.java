@@ -7,10 +7,17 @@ public class Bug extends Cell{
     @Getter
     private char direction;
 
-    public Bug (int x, int y) {
+    private char bugType;
+
+    public Bug (int x, int y, char bugType) {
         super(x, y);
         direction = 'N';
         this.scriptIndex = 0;
+        this.bugType = bugType;
+    }
+
+    private boolean isAlly(char otherBugType){
+        return bugType == otherBugType;
     }
 
     private int[] bugScript;
@@ -22,7 +29,29 @@ public class Bug extends Cell{
 
     @Override
     public Cell clone() {
-        return new Bug(this.getRow(), this.getColumn());
+        return new Bug(this.getRow(), this.getColumn(), bugType);
+    }
+
+    public Cell getForwardCell(Cell[][] cells){
+        int rowFrontBug = 0;
+        int columnFrontBug = 0;
+        if(direction == 'N') {
+            rowFrontBug = this.getRow() - 1;
+            columnFrontBug = this.getColumn();
+        }
+        else if(direction == 'E') {
+            rowFrontBug = this.getRow() ;
+            columnFrontBug = this.getColumn() + 1;
+        }
+        else if(direction == 'S') {
+            rowFrontBug = this.getRow() + 1;
+            columnFrontBug = this.getColumn();
+        }
+        else if(direction == 'W') {
+            rowFrontBug = this.getRow();
+            columnFrontBug = this.getColumn() - 1;
+        }
+        return cells[rowFrontBug][columnFrontBug];
     }
 
     public void execute(Cell[][] map, int tick) {
@@ -90,10 +119,72 @@ public class Bug extends Cell{
                 }
                 break;
             case 13:
-
+                Cell forwardCellAtt= getForwardCell(map);
+                if(forwardCellAtt instanceof Bug) {
+                    Bug otherBug = (Bug) forwardCellAtt;
+                    if(!isAlly(otherBug.bugType)){
+                        Food newFood = new Food(forwardCellAtt.getRow(), forwardCellAtt.getColumn());
+                        map[forwardCellAtt.getRow()][forwardCellAtt.getColumn()] = newFood;
+                    }
+                }
+                break;
+            case 14:
+                Cell forwardCellFood = getForwardCell(map);
+                if(forwardCellFood instanceof Food){
+                    Bug newBug = new Bug(forwardCellFood.getRow(), forwardCellFood.getColumn(), bugType);
+                    newBug.setBugScript(this.bugScript);
+                    map[forwardCellFood.getRow()][forwardCellFood.getColumn()] = newBug;
+                }
+                break;
+            case 30:
+                Cell forwardCellIfEnemy = getForwardCell(map);
+                if(forwardCellIfEnemy instanceof Bug) {
+                    Bug otherBug = (Bug) forwardCellIfEnemy;
+                    if(!isAlly(otherBug.bugType)){
+                        scriptIndex++;
+                        execute(map, tick);
+                    }
+                }
+                break;
+            case 31:
+                Cell forwardCellIfAlly = getForwardCell(map);
+                if(forwardCellIfAlly instanceof Bug) {
+                    Bug otherBug = (Bug) forwardCellIfAlly;
+                    if(isAlly(otherBug.bugType)){
+                        scriptIndex++;
+                        execute(map, tick);
+                    }
+                }
+                break;
+            case 32:
+                Cell forwardCellIfFood = getForwardCell(map);
+                if(forwardCellIfFood instanceof Food) {
+                    scriptIndex++;
+                    execute(map, tick);
+                }
+                break;
+            case 33:
+                Cell forwardCellIfEmpty= getForwardCell(map);
+                if(forwardCellIfEmpty instanceof EmptySpace) {
+                    scriptIndex++;
+                    execute(map, tick);
+                }
+                break;
+            case 34:
+                Cell forwardCellIfWall = getForwardCell(map);
+                if(forwardCellIfWall instanceof Wall) {
+                    scriptIndex++;
+                    execute(map, tick);
+                }
+                break;
+            case 35:
+                int destinationIndex = bugScript[scriptIndex+1];
+                scriptIndex = destinationIndex;
+                execute(map, tick);
                 break;
 
         }
+        scriptIndex++;
     }
 
 }

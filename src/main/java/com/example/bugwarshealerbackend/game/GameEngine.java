@@ -52,8 +52,6 @@ public class GameEngine {
                 if(cells[i][j] instanceof Bug) {
                     Bug bug = (Bug) cells[i][j];
                     bug.execute(cells, tick);
-
-
                 }
             }
         }
