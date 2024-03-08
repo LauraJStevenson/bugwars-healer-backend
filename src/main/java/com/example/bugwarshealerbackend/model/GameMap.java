@@ -40,7 +40,7 @@ public class GameMap {
                     case 'b' :
                     case 'c' :
                     case 'd' :
-                        Bug bug = new Bug(i,j);
+                        Bug bug = new Bug(i,j, character);
                         currentCell = bug;
                         this.bugs.add(bug);
                         break;
