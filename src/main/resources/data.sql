@@ -45,28 +45,29 @@ VALUES
 
 --Insert test scripts for each test user--
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script1', 'Test'
+SELECT id, 'Script1', ':Start\nifFood FoodFound\nifEmpty MoveForward\nifEnemy Attack\nnoop\n\n:FoodFound\nrotr\ngoto Start\n\n:MoveForward\nmov\ngoto Start\n\n:Attack\natt\ngoto Start'
 FROM users WHERE username = 'TestLaura';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script2', 'Test'
+SELECT id, 'Script2', ':Start\nifFood FoodFound\nifEmpty MoveForward\nifEnemy Attack\nnoop\n\n:FoodFound\nrotr\ngoto Start\n\n:MoveForward\nmov\ngoto Start\n\n:Attack\natt\ngoto Start'
 FROM users WHERE username = 'TestAshley';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script3', 'Test'
+SELECT id, 'Script3', ':Start\nifFood FoodFound\nifEmpty MoveForward\nifEnemy Attack\nnoop\n\n:FoodFound\nrotr\ngoto Start\n\n:MoveForward\nmov\ngoto Start\n\n:Attack\natt\ngoto Start'
 FROM users WHERE username = 'TestYagmur';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script4', 'Test'
+SELECT id, 'Script4', ':Start\nifFood FoodFound\nifEmpty MoveForward\nifEnemy Attack\nnoop\n\n:FoodFound\nrotr\ngoto Start\n\n:MoveForward\nmov\ngoto Start\n\n:Attack\natt\ngoto Start'
 FROM users WHERE username = 'TestKimlyn';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script5', 'Test'
+SELECT id, 'Script5', ':Start\nifFood FoodFound\nifEmpty MoveForward\nifEnemy Attack\nnoop\n\n:FoodFound\nrotr\ngoto Start\n\n:MoveForward\nmov\ngoto Start\n\n:Attack\natt\ngoto Start'
 FROM users WHERE username = 'TestViv';
 
 INSERT INTO scripts (user_id, name, raw_code)
-SELECT id, 'Script6', 'Test'
+SELECT id, 'Script6', ':Start\nifFood FoodFound\nifEmpty MoveForward\nifEnemy Attack\nnoop\n\n:FoodFound\nrotr\ngoto Start\n\n:MoveForward\nmov\ngoto Start\n\n:Attack\natt\ngoto Start'
 FROM users WHERE username = 'TestSam';
+
 
 INSERT INTO map (name, serialization)
 VALUES
