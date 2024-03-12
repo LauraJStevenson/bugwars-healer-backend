@@ -17,7 +17,7 @@ public class MapController {
 
     @Autowired
     private MapRepository mapRepository;
-    @GetMapping("/maps")
+    @GetMapping("/")
     public List<Map> maps () {
         return mapRepository.findAll();
     }
