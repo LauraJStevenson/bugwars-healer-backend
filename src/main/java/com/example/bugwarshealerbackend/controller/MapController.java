@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/map")
+@RequestMapping("/api/v1/maps")
 public class MapController {
 
     @Autowired
