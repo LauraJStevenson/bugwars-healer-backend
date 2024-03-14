@@ -35,6 +35,9 @@ public class Script {
     @Column(name = "raw_code", nullable = false, columnDefinition = "TEXT")
     private String rawCode;
 
+    @Column(name = "bytecode", nullable = false)
+    private Integer[] bytecode;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

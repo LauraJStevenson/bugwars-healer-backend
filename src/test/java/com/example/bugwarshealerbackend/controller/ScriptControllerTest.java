@@ -37,17 +37,27 @@ class ScriptControllerTest {
     @Test
     void createScript() {
         // Arrange
+        ScriptDto scriptDto = new ScriptDto();
+        scriptDto.setName("Test Script");
+        scriptDto.setRawCode("Test Code");
+        // You can set other properties of ScriptDto as needed
+
         Script script = new Script();
-        when(scriptService.createScript(any(Script.class))).thenReturn(script);
+        script.setName(scriptDto.getName());
+        script.setRawCode(scriptDto.getRawCode());
+        // Ensure that the script object has the necessary properties set based on the scriptDto
+
+        when(scriptService.createScript(any(ScriptDto.class))).thenReturn(script);
 
         // Act
-        Script returnedScript = scriptController.createScript(script);
+        Script returnedScript = scriptController.createScript(scriptDto);
 
         // Assert
         assertNotNull(returnedScript);
         assertEquals(script, returnedScript);
-        verify(scriptService, times(1)).createScript(any(Script.class));
+        verify(scriptService, times(1)).createScript(any(ScriptDto.class));
     }
+
 
     @Test
     void getAllScriptsByUserId() {

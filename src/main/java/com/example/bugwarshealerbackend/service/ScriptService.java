@@ -2,7 +2,9 @@ package com.example.bugwarshealerbackend.service;
 
 import com.example.bugwarshealerbackend.dto.ScriptDto;
 import com.example.bugwarshealerbackend.jpa.ScriptRepository;
+import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.Script;
+import com.example.bugwarshealerbackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,10 @@ public class ScriptService {
     @Autowired
     private ScriptRepository scriptRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
     /**
      * Creates and saves a new script in the repository.
      *
@@ -19,9 +25,26 @@ public class ScriptService {
      * @return The saved script entity.
      */
     @Transactional
-    public Script createScript(Script script) {
+    public Script createScript(ScriptDto scriptDto) {
+        Script script = new Script();
+        script.setName(scriptDto.getName());
+        script.setRawCode(scriptDto.getRawCode());
+        script.setBytecode(scriptDto.getBytecode());
+
+        if (scriptDto.getUserId() != null) {
+            // Assuming you have a userRepository to fetch users
+            User user = userRepository.findById(scriptDto.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found for this id :: " + scriptDto.getUserId()));
+            script.setUser(user);  // Set the user here
+        } else {
+            throw new RuntimeException("UserId is null");
+        }
+
         return scriptRepository.save(script);
     }
+
+
+
 
     /**
      * Retrieves all scripts associated with a specific user ID.
@@ -67,6 +90,10 @@ public class ScriptService {
 
         if (scriptDetails.getRawCode() != null) {
             script.setRawCode(scriptDetails.getRawCode());
+        }
+
+        if (scriptDetails.getBytecode() != null) {
+            script.setBytecode(scriptDetails.getBytecode());
         }
 
         return scriptRepository.save(script);

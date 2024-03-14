@@ -32,14 +32,25 @@ class ScriptServiceTest {
 
     @Test
     void createScriptTest() {
-        Script script = new Script();
-        when(scriptRepository.save(any(Script.class))).thenReturn(script);
+        ScriptDto scriptDto = new ScriptDto();
+        scriptDto.setName("Test Name");
+        scriptDto.setRawCode("Test Raw Code");
 
-        Script created = scriptService.createScript(script);
+
+        Script expectedScript = new Script();
+        expectedScript.setName(scriptDto.getName());
+        expectedScript.setRawCode(scriptDto.getRawCode());
+        expectedScript.setBytecode(scriptDto.getBytecode());
+
+        when(scriptRepository.save(any(Script.class))).thenReturn(expectedScript);
+
+        Script created = scriptService.createScript(scriptDto);
 
         assertNotNull(created);
-        verify(scriptRepository).save(script);
+        assertEquals(expectedScript, created);
+        verify(scriptRepository).save(any(Script.class));
     }
+
 
     @Test
     void getAllScriptsByUserIdTest() {
@@ -73,7 +84,7 @@ class ScriptServiceTest {
         existingScript.setRawCode("Old Code");
 
         ScriptDto scriptDetails = new ScriptDto();
-        scriptDetails.setName("New Name"); // Assume these methods correctly update the fields
+        scriptDetails.setName("New Name");
         scriptDetails.setRawCode("New Code");
 
         when(scriptRepository.findById(scriptId)).thenReturn(Optional.of(existingScript));

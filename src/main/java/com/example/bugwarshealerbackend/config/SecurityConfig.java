@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/logout").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/scripts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/maps/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/game/**").permitAll()
 
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated())
                 .addFilterBefore(new AuthenticationFilter(userRepository),
