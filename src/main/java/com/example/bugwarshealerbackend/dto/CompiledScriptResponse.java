@@ -11,3 +11,8 @@ public class CompiledScriptResponse extends BaseCompilationResponse {
         this.compiledScript = compiledScript;
     }
 }
+
+
+//the CompiledScriptResponse class is designed to represent a response to the compilation of a script.
+// It inherits from a base class (BaseCompilationResponse) and contains a List of Integers (compiledScript).
+// The constructor initializes the fields with the provided values.

@@ -5,9 +5,6 @@ import com.example.bugwarshealerbackend.dto.UserLoginRequest;
 import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.jwt.JwtService;
 import com.example.bugwarshealerbackend.model.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.ActiveProfiles;
-
-
-import static com.example.bugwarshealerbackend.jwt.JwtService.createToken;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -60,7 +54,7 @@ class LoginControllerTest {
 
         when(userRepository.findByUsername("klyndelara")).thenReturn(user);
 
-//        when(JwtService.createToken("username")).thenReturn("mocked-jwt-token");
+
 
 
         // Perform the login
