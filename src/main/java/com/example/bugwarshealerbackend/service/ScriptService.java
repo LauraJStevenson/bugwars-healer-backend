@@ -32,16 +32,16 @@ public class ScriptService {
         script.setBytecode(scriptDto.getBytecode());
 
         if (scriptDto.getUserId() != null) {
-            // Assuming you have a userRepository to fetch users
             User user = userRepository.findById(scriptDto.getUserId())
                     .orElseThrow(() -> new RuntimeException("User not found for this id :: " + scriptDto.getUserId()));
-            script.setUser(user);  // Set the user here
+            script.setUser(user);
         } else {
             throw new RuntimeException("UserId is null");
         }
 
         return scriptRepository.save(script);
     }
+
 
 
 
