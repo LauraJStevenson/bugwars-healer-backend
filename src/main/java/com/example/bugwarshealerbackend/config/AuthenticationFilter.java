@@ -12,15 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class AuthenticationFilter extends OncePerRequestFilter {
-
     private final UserRepository userRepository;
-
     public AuthenticationFilter(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -48,7 +44,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(token);
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
-
+//responsible for extracting authentication information from the "Authorization" header, creating an authentication token,
+// and setting it in the security context for further processing in the Spring Security filter chain.
     private boolean authorizationHeaderIsInvalid(String authorizationHeader) {
         return authorizationHeader == null
                 || !authorizationHeader.startsWith("Bearer ");

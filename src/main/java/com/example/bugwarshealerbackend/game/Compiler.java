@@ -3,12 +3,9 @@ package com.example.bugwarshealerbackend.game;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 public class Compiler {
-
     // Deliminator between the label and the command
     public static final String LABEL_DELIM = " ";
-
     public static final Map<String, Integer> COMMANDS = new HashMap<>();
     public static Pattern PATTERN;
     static {
@@ -30,28 +27,44 @@ public class Compiler {
 
     }
 
-    public static List<Integer> compile(String script) {
+    //clean empty area and comment
+    public static List<String> cleanScript (String script) {
+        List<String> result = new ArrayList<>();
+        String[] lines = script.split("\n");
+        for(String line: lines) {
+            String finalLine = line;
+            int hashTagPosition = finalLine.indexOf("#");
+            if (hashTagPosition != -1) {
+                finalLine = finalLine.substring(0, hashTagPosition);
+            }
+            finalLine = finalLine.trim();
+            finalLine = finalLine.replaceAll("\s+", " ");
+            if(!finalLine.isEmpty()) {
+                result.add(finalLine);
+            }
+        }
+        return result;
+    }
 
+    public static List<Integer> compile(String script) {
         List<Integer> commands = new ArrayList<>();
         Map<String, Integer> labelToIndexMap = new HashMap<>();
         List<String> labels = new ArrayList<>();
-
         //gets each line of the scripts
-        String[] lines = script.split("\n");
-
+        List<String> lines = cleanScript(script);
         for(String line: lines) {
-
             //looking label
             if(line.startsWith(":")) {
                 String[] parts = line.split(LABEL_DELIM);
-                String label =  parts[0].substring(1);
+                String label = parts[0].substring(1);
                 int labelIndex = commands.size();
                 labelToIndexMap.put(label, labelIndex);
-
-                //process command
-                String command = parts[1];
-                int compiledCommand = COMMANDS.get(command);
-                commands.add(compiledCommand);
+                if(parts.length == 2) {
+                    //process command
+                    String command = parts[1];
+                    int compiledCommand = COMMANDS.get(command);
+                    commands.add(compiledCommand);
+                }
             } else {
                 //control command
                 if(line.contains(LABEL_DELIM)) {
@@ -77,14 +90,14 @@ public class Compiler {
 
     public static boolean validate(String script) {
 
-        String[] lines = script.split("\n");
+        List<String> lines = cleanScript(script);
         HashSet<String> labelLeft = new HashSet<>();
         List<String> labelRight = new ArrayList<>();
 
         for(String line: lines) {
             if(line.startsWith(":")) {
                 String[] parts = line.split(LABEL_DELIM);
-                if(parts.length != 2){
+                if(parts.length > 2){
                     return false;
                 }
                 String label = parts[0].substring(1);
@@ -101,9 +114,11 @@ public class Compiler {
                     return false;
                 }
                 labelLeft.add(label);
-                String command = parts[1];
-                if(!COMMANDS.containsKey(command)){
-                    return false;
+                if(parts.length == 2) {
+                    String command = parts[1];
+                    if(!COMMANDS.containsKey(command)){
+                        return false;
+                    }
                 }
             } else {
                 if(line.contains(LABEL_DELIM)){

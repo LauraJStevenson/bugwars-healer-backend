@@ -3,14 +3,13 @@ package com.example.bugwarshealerbackend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-
+import java.util.ArrayList;
+import java.util.List;
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -31,13 +30,22 @@ public class User {
         @Column(name = "lastname", nullable = false)
         private String lastname;
 
+        @Size(min = 8, message = "Password must be at least 8 characters long.")
         @Column(name = "password_hash", nullable = false)
         private String password;
 
-        @Size(min = 5, max = 50, message = "Email length must be between 5 and 100 characters.")
+        @Size(min = 5, max = 50, message = "Email length must be between 5 and 50 characters.")
         @Email(message = "Email should be valid.")
         @Column(name = "email", nullable = false, unique = true)
         private String email;
+
+        @Column(name = "refresh_token")
+        private String refreshToken;
+
+        @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+        @ToString.Exclude
+        @EqualsAndHashCode.Exclude
+        private List<Script> scripts = new ArrayList<>();
 
         @Column(name = "counter", nullable = true)
         private int counter;
