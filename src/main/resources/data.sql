@@ -18,26 +18,15 @@ BEGIN;
            activated BOOLEAN
        );
 
-<<<<<<< HEAD
        CREATE TABLE scripts (
            id SERIAL PRIMARY KEY,
            user_id INTEGER NOT NULL,
            name VARCHAR(50) NOT NULL,
            raw_code TEXT NOT NULL,
+           bytecode INTEGER[],
            CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
            CONSTRAINT unique_user_script_name UNIQUE(user_id, name)
        );
-=======
-CREATE TABLE scripts (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    raw_code TEXT NOT NULL,
-    bytecode INTEGER[],
-    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT unique_user_script_name UNIQUE(user_id, name)
-);
->>>>>>> aff91dca883b2fc046ba6328c4fc20fe195662b2
 
        CREATE TABLE map (
            id SERIAL PRIMARY KEY,
