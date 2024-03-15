@@ -1,0 +1,30 @@
+29x29
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X                a         aX
+X                      a  a X
+X                      a  a X
+X                           X
+X   a                     a X
+X   XXXXXXXX    XXXXXXXXX   X
+X   X  X           X    X   X
+X   X XXXX XXXXXX XXXXX X   X
+X   X      X    X       X   X
+X   XXXXXX   XXXXXXXXXX X  aX
+X   X     XX      ff  X X   X
+X   X XXXX   XXX f  f   X   X
+X   X          X  ff  X X   X
+X   XXXXXXXXXXXXXXXXXXX X   X
+X   X          X  ff  X X   X
+X   X XXXX   XXX f  f   X   X
+X   X     XX      ff  X X   X
+Xb  XXXXXX   XXXXXXXXXX X   X
+X   X      X    X       X   X
+X   X XXXX XXXXXX XXXXX X   X
+X   X  X           X    X   X
+X   XXXXXXXX    XXXXXXXXX   X
+X b                     b   X
+X                           X
+X b  b                      X
+X b  b                      X
+Xb         b                X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
