@@ -79,6 +79,10 @@ class ScriptControllerTest {
         // Arrange
         Long scriptId = 1L;
         Script script = new Script();
+        script.setId(scriptId);
+        script.setName("Sample Name");
+        script.setRawCode("Sample Code");
+
         when(scriptService.getScriptById(scriptId)).thenReturn(script);
 
         // Act
@@ -86,9 +90,12 @@ class ScriptControllerTest {
 
         // Assert
         assertNotNull(returnedScript);
-        assertEquals(script, returnedScript);
+        assertEquals(script.getId(), returnedScript.getId());
+        assertEquals(script.getName(), returnedScript.getName());
+        assertEquals(script.getRawCode(), returnedScript.getRawCode());
         verify(scriptService, times(1)).getScriptById(scriptId);
     }
+
 
     @Test
     void updateScript() {
