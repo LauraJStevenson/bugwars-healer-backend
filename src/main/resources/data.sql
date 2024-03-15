@@ -23,6 +23,7 @@ CREATE TABLE scripts (
     user_id INTEGER NOT NULL,
     name VARCHAR(50) NOT NULL,
     raw_code TEXT NOT NULL,
+    bytecode INTEGER[],
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT unique_user_script_name UNIQUE(user_id, name)
 );

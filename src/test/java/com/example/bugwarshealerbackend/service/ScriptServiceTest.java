@@ -2,7 +2,9 @@ package com.example.bugwarshealerbackend.service;
 
 import com.example.bugwarshealerbackend.dto.ScriptDto;
 import com.example.bugwarshealerbackend.jpa.ScriptRepository;
+import com.example.bugwarshealerbackend.jpa.UserRepository;
 import com.example.bugwarshealerbackend.model.Script;
+import com.example.bugwarshealerbackend.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +24,9 @@ class ScriptServiceTest {
     @Mock
     private ScriptRepository scriptRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private ScriptService scriptService;
 
@@ -32,14 +37,37 @@ class ScriptServiceTest {
 
     @Test
     void createScriptTest() {
-        Script script = new Script();
-        when(scriptRepository.save(any(Script.class))).thenReturn(script);
+        // Arrange
+        Long userId = 1L;
+        User mockUser = new User();
+        mockUser.setId(userId);
 
-        Script created = scriptService.createScript(script);
+        ScriptDto scriptDto = new ScriptDto();
+        scriptDto.setName("Test Name");
+        scriptDto.setRawCode("Test Raw Code");
+        scriptDto.setUserId(userId);
 
+        Script expectedScript = new Script();
+        expectedScript.setName(scriptDto.getName());
+        expectedScript.setRawCode(scriptDto.getRawCode());
+        expectedScript.setUser(mockUser);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        when(scriptRepository.save(any(Script.class))).thenReturn(expectedScript);
+
+        // Act
+        Script created = scriptService.createScript(scriptDto);
+
+        // Assert
         assertNotNull(created);
-        verify(scriptRepository).save(script);
+        assertEquals(expectedScript.getName(), created.getName());
+        assertEquals(expectedScript.getRawCode(), created.getRawCode());
+        assertEquals(expectedScript.getUser(), created.getUser());
+        verify(scriptRepository).save(any(Script.class));
+        verify(userRepository).findById(userId);
     }
+
+
 
     @Test
     void getAllScriptsByUserIdTest() {
@@ -65,7 +93,7 @@ class ScriptServiceTest {
 
     @Test
     void updateScriptTest() {
-        // Given
+        // Arrange
         Long scriptId = 1L;
         Script existingScript = new Script();
         existingScript.setId(scriptId);
@@ -73,16 +101,16 @@ class ScriptServiceTest {
         existingScript.setRawCode("Old Code");
 
         ScriptDto scriptDetails = new ScriptDto();
-        scriptDetails.setName("New Name"); // Assume these methods correctly update the fields
+        scriptDetails.setName("New Name");
         scriptDetails.setRawCode("New Code");
 
         when(scriptRepository.findById(scriptId)).thenReturn(Optional.of(existingScript));
         when(scriptRepository.save(any(Script.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // When
+        // Act
         Script updatedScript = scriptService.updateScript(scriptId, scriptDetails);
 
-        // Then
+        // Assert
         assertNotNull(updatedScript);
         assertEquals("New Name", updatedScript.getName());
         assertEquals("New Code", updatedScript.getRawCode());

@@ -18,10 +18,10 @@ class BaseCompilationResponseTest {
     @Test
     void testGetScript() {
         String testScript = "test script";
-        BaseCompilationResponse response = new BaseCompilationResponse("initial script");
+        BaseCompilationResponse response = new BaseCompilationResponse(testScript);
         String result = response.getScript();
 
-        assertEquals(testScript,result);
+        assertEquals(testScript, result);
     }
 
     @Test
