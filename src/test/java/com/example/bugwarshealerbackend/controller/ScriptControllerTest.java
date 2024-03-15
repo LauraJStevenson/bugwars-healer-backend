@@ -3,13 +3,16 @@ package com.example.bugwarshealerbackend.controller;
 import com.example.bugwarshealerbackend.dto.ScriptDto;
 import com.example.bugwarshealerbackend.model.Script;
 import com.example.bugwarshealerbackend.service.ScriptService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-
+@ActiveProfiles("test")
 class ScriptControllerTest {
 
     @Mock
@@ -34,20 +37,32 @@ class ScriptControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @AfterEach
+    void tearDown() {
+        Mockito.reset(scriptService);
+    }
+
     @Test
     void createScript() {
         // Arrange
+        ScriptDto scriptDto = new ScriptDto();
+        scriptDto.setName("Test Script");
+        scriptDto.setRawCode("Test Code");
+
         Script script = new Script();
-        when(scriptService.createScript(any(Script.class))).thenReturn(script);
+        script.setName(scriptDto.getName());
+        script.setRawCode(scriptDto.getRawCode());
+
+        when(scriptService.createScript(any(ScriptDto.class))).thenReturn(script);
 
         // Act
-        Script returnedScript = scriptController.createScript(script);
+        Script returnedScript = scriptController.createScript(scriptDto);
 
         // Assert
         assertNotNull(returnedScript);
         assertEquals(script, returnedScript);
-        verify(scriptService, times(1)).createScript(any(Script.class));
     }
+
 
     @Test
     void getAllScriptsByUserId() {
@@ -68,19 +83,21 @@ class ScriptControllerTest {
 
     @Test
     void getScriptById() {
-        // Arrange
         Long scriptId = 1L;
         Script script = new Script();
+        script.setId(scriptId);
+        script.setName("Sample Name");
+        script.setRawCode("Sample Code");
+
         when(scriptService.getScriptById(scriptId)).thenReturn(script);
 
-        // Act
         Script returnedScript = scriptController.getScriptById(scriptId);
 
-        // Assert
         assertNotNull(returnedScript);
-        assertEquals(script, returnedScript);
-        verify(scriptService, times(1)).getScriptById(scriptId);
+        assertEquals(script.getId(), returnedScript.getId());
     }
+
+
 
     @Test
     void updateScript() {

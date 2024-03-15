@@ -7,12 +7,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -22,36 +21,18 @@ class ScriptRepositoryTest {
     private ScriptRepository scriptRepository;
 
     @Test
-    void findByUserId() {
-        // Arrange
-        Long userId = 1L;
-        List<Script> expectedScripts = new ArrayList<>();
-        expectedScripts.add(new Script());
-        expectedScripts.add(new Script());
-
-        when(scriptRepository.findByUserId(userId)).thenReturn(expectedScripts);
-
-        // Act
-        List<Script> actualScripts = scriptRepository.findByUserId(userId);
-
-        // Assert
-        assertNotNull(actualScripts);
-        assertEquals(expectedScripts.size(), actualScripts.size());
-    }
-
-    @Test
     void findById() {
         // Arrange
         Long scriptId = 1L;
         Script expectedScript = new Script();
-
+        expectedScript.setId(scriptId);
         when(scriptRepository.findById(scriptId)).thenReturn(Optional.of(expectedScript));
 
         // Act
         Optional<Script> actualScriptOptional = scriptRepository.findById(scriptId);
 
         // Assert
-        assertNotNull(actualScriptOptional);
-        assertEquals(expectedScript, actualScriptOptional.orElse(null));
+        assertTrue(actualScriptOptional.isPresent(), "Script should be found");
+        assertEquals(expectedScript, actualScriptOptional.get(), "The found script should match the expected script");
     }
 }

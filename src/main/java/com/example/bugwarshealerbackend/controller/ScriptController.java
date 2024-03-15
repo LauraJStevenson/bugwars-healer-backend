@@ -26,8 +26,8 @@ public class ScriptController {
      * @return the created script
      */
     @PostMapping("/")
-    public Script createScript(@RequestBody Script script) {
-        return scriptService.createScript(script);
+    public Script createScript(@RequestBody ScriptDto scriptDto) {
+        return scriptService.createScript(scriptDto);
     }
 
     /**
