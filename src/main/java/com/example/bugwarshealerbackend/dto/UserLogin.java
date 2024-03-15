@@ -2,9 +2,10 @@ package com.example.bugwarshealerbackend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 @Getter
 @AllArgsConstructor
-public class UserLoginRequest extends BaseResponse{
+public class UserLogin {
 
     private Long id;
     private String username;
