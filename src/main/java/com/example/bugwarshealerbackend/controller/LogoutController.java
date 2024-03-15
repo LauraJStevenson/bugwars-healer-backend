@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/api/v1")
 public class LogoutController {
+
+    private final JwtService jwtService;
+
+    public LogoutController(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
     @PostMapping("/logout")
     public void logout()
     {
