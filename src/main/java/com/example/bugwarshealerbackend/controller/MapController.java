@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
+@CrossOrigin
+@RequestMapping("/api/v1/maps")
 public class MapController {
 
     @Autowired
     private MapRepository mapRepository;
-    @GetMapping("/maps")
+    @GetMapping("/")
     public List<Map> maps () {
         return mapRepository.findAll();
     }

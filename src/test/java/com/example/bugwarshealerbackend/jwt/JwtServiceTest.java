@@ -1,22 +1,15 @@
 package com.example.bugwarshealerbackend.jwt;
 
-import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
-import java.security.Key;
 import java.util.Date;
-
 import static com.example.bugwarshealerbackend.jwt.JwtService.*;
-import static org.aspectj.bridge.Version.getTime;
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
