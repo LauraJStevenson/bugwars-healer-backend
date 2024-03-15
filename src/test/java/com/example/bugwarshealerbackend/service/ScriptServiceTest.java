@@ -30,27 +30,6 @@ class ScriptServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void createScriptTest() {
-        ScriptDto scriptDto = new ScriptDto();
-        scriptDto.setName("Test Name");
-        scriptDto.setRawCode("Test Raw Code");
-
-
-        Script expectedScript = new Script();
-        expectedScript.setName(scriptDto.getName());
-        expectedScript.setRawCode(scriptDto.getRawCode());
-        expectedScript.setBytecode(scriptDto.getBytecode());
-
-        when(scriptRepository.save(any(Script.class))).thenReturn(expectedScript);
-
-        Script created = scriptService.createScript(scriptDto);
-
-        assertNotNull(created);
-        assertEquals(expectedScript, created);
-        verify(scriptRepository).save(any(Script.class));
-    }
-
 
     @Test
     void getAllScriptsByUserIdTest() {

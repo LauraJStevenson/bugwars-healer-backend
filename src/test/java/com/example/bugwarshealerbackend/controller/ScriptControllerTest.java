@@ -40,12 +40,10 @@ class ScriptControllerTest {
         ScriptDto scriptDto = new ScriptDto();
         scriptDto.setName("Test Script");
         scriptDto.setRawCode("Test Code");
-        // You can set other properties of ScriptDto as needed
 
         Script script = new Script();
         script.setName(scriptDto.getName());
         script.setRawCode(scriptDto.getRawCode());
-        // Ensure that the script object has the necessary properties set based on the scriptDto
 
         when(scriptService.createScript(any(ScriptDto.class))).thenReturn(script);
 
