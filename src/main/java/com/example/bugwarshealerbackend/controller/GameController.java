@@ -29,19 +29,4 @@ public class GameController {
         boolean isValid = Compiler.validate(script);
         return new ValidationResultResponse(isValid, script);
     }
-
-    public ResponseEntity<?> startGame(@RequestBody StartGameRequest startGameRequest) {
-        GameMap initialMap = new GameMap(startGameRequest.getMap());
-        int[] script1 = startGameRequest.getScript1();
-        int[] script2 = startGameRequest.getScript2();
-        int[] script3 = startGameRequest.getScript3();
-        int[] script4 = startGameRequest.getScript4();
-        int ticks = startGameRequest.getTicks();
-
-        List<GameMap> gameResults = GameEngine.play(initialMap, script1, script2, script3, script4, ticks);
-
-        return ResponseEntity.ok(gameResults);
-    }
-
-
 }
