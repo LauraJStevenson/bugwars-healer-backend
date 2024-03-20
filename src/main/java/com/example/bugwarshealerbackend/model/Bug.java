@@ -29,7 +29,10 @@ public class Bug extends Cell{
 
     @Override
     public Cell clone() {
-        return new Bug(this.getRow(), this.getColumn(), bugType);
+        Bug result = new Bug(this.getRow(), this.getColumn(), bugType);
+        result.setBugScript(this.bugScript);
+        result.scriptIndex = this. scriptIndex;
+        return result;
     }
 
     public Cell getForwardCell(Cell[][] cells){
