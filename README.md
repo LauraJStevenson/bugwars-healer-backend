@@ -80,11 +80,11 @@ In order to run this project on your local machine, there are a few steps you ne
 - We now have a Game engine to run the game.
 - We have Compiler logic to parse bug code into actions (bytecode).
 - Design maps for the bugs to compete on.
-    If you would like to add maps to the project, please use the following key:
-    X = Wall
-    a, b, c, d = Bug4
-    f = Food
-    empty = Blank Space
+    - If you would like to add maps to the project, please use the following key:
+    - X = Wall
+    - a, b, c, d = Bug4
+    - f = Food
+    - empty = Blank Space
     
 
 
