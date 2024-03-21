@@ -46,7 +46,8 @@ public class GameEngine {
 
     private static GameMap playRound(GameMap currentMap, int tick) {
 
-        Cell[][] cells = currentMap.getCells();
+        GameMap result = currentMap.clone();
+        Cell[][] cells = result.getCells();
         for (int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) {
                 if(cells[i][j] instanceof Bug) {
@@ -55,6 +56,6 @@ public class GameEngine {
                 }
             }
         }
-        return currentMap;
+        return result;
     }
 }

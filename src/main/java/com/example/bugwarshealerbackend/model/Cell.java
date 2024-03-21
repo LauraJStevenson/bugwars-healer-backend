@@ -11,8 +11,8 @@ public abstract class Cell {
         this.column = column;
     }
 
-    protected int getRow() {return row;}
-    protected int getColumn() {return column;}
+    public int getRow() {return row;}
+    public int getColumn() {return column;}
     protected void setRow(int row) {this.row = row;}
     protected void setColumn(int column) {this.column = column;}
 }
