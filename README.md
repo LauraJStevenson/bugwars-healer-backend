@@ -74,12 +74,18 @@ In order to run this project on your local machine, there are a few steps you ne
 
 ### Continued development
 
-- Give players the ability to create their own scripts for creatures.
+- Players now have the ability to create their own scripts for creatures.
 - Development Blog on live site.
 - More robust testing for both Server & Client portions of our Application.
-- Game engine to run the game.
-- Compiler logic to parse bug code into actions.
+- We now have a Game engine to run the game.
+- We have Compiler logic to parse bug code into actions (bytecode).
 - Design maps for the bugs to compete on.
+    If you would like to add maps to the project, please use the following key:
+    X = Wall
+    a, b, c, d = Bug4
+    f = Food
+    empty = Blank Space
+    
 
 
 ## Contributors
@@ -87,6 +93,6 @@ In order to run this project on your local machine, there are a few steps you ne
 - [Laura's GitHub](https://github.com/LauraJStevenson)
 - [Ashley's GitHub](https://github.com/micamash)
 - [Kimlyn's GitHub](https://github.com/klyndelara)
-- [Rob's GitHub](https://github.com/RHarris2014)
+- [Samanatha's GitHub](https://github.com/sbutterfield5)
 - [Viv's GitHub](https://github.com/Viv-Valentin)
 - [Yagmur's GitHub](https://github.com/yagmurmuslu)
