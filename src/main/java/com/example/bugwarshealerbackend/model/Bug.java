@@ -9,11 +9,14 @@ public class Bug extends Cell{
 
     private char bugType;
 
+    private boolean executed;
+
     public Bug (int x, int y, char bugType) {
         super(x, y);
         direction = 'N';
         this.scriptIndex = 0;
         this.bugType = bugType;
+        this.executed = false;
     }
 
     private boolean isAlly(char otherBugType){
@@ -31,7 +34,8 @@ public class Bug extends Cell{
     public Cell clone() {
         Bug result = new Bug(this.getRow(), this.getColumn(), bugType);
         result.setBugScript(this.bugScript);
-        result.scriptIndex = this. scriptIndex;
+        result.scriptIndex = this.scriptIndex;
+        result.direction = this.direction;
         return result;
     }
 
@@ -57,7 +61,17 @@ public class Bug extends Cell{
         return cells[rowFrontBug][columnFrontBug];
     }
 
+    public void resetExecuted(){
+        this.executed = false;
+    }
+
     public void execute(Cell[][] map, int tick) {
+
+        if(this.executed) {
+            return;
+        }
+
+        this.executed = true;
 
         int command = this.bugScript[this.scriptIndex];
         switch (command) {
@@ -99,6 +113,7 @@ public class Bug extends Cell{
                     this.setRow(destinationX);
                     this.setColumn(destinationY);
                 }
+                break;
             case 11 :
                 if(direction == 'N') {
                     this.direction = 'E';

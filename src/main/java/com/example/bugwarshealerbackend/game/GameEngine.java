@@ -40,6 +40,7 @@ public class GameEngine {
             GameMap updatedMap = playRound(currentMap, i);
             result.add(updatedMap);
             currentMap = updatedMap;
+            currentMap.nextRound();
         }
         return result;
     }

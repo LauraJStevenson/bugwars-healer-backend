@@ -14,6 +14,12 @@ public class GameMap {
         this.bugs = bugs;
     }
 
+    public void nextRound(){
+        for(Bug bug : getBugs()) {
+            bug.resetExecuted();
+        }
+    }
+
     public List<Bug> getBugs() {
         return this.bugs;
     }
