@@ -7,11 +7,8 @@ public class GameMap {
 
     private Cell[][] cells;
 
-    private List<Bug> bugs;
-
-    private GameMap(Cell[][] cells, List<Bug> bugs) {
+    private GameMap(Cell[][] cells) {
         this.cells = cells;
-        this.bugs = bugs;
     }
 
     public void nextRound(){
@@ -21,11 +18,19 @@ public class GameMap {
     }
 
     public List<Bug> getBugs() {
-        return this.bugs;
+        List<Bug> bugs = new ArrayList<>();
+        for(Cell[] cellRow : cells) {
+            for(Cell cellColumn : cellRow) {
+                if(cellColumn instanceof Bug) {
+                    Bug bug = (Bug) cellColumn;
+                    bugs.add(bug);
+                }
+            }
+        }
+        return bugs;
     }
 
     public GameMap(String asciiMap) {
-        this.bugs = new ArrayList<>();
         String[] lines = asciiMap.split("\n");
         this.cells = new Cell[lines.length][];
         for(int i = 0; i < lines.length; i++) {
@@ -48,7 +53,6 @@ public class GameMap {
                     case 'd' :
                         Bug bug = new Bug(i,j, character);
                         currentCell = bug;
-                        this.bugs.add(bug);
                         break;
                     case 'f' :
                         currentCell = new Food(i,j);
@@ -80,7 +84,7 @@ public class GameMap {
                 }
             }
         }
-        GameMap newMap = new GameMap(cells,bugs);
+        GameMap newMap = new GameMap(cells);
         return newMap;
     }
 }

@@ -7,6 +7,7 @@ public class Bug extends Cell{
     @Getter
     private char direction;
 
+    @Getter
     private char bugType;
 
     private boolean executed;
