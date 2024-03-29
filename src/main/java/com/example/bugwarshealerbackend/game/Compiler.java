@@ -30,19 +30,21 @@ public class Compiler {
     //clean empty area and comment
     public static List<String> cleanScript (String script) {
         List<String> result = new ArrayList<>();
-        String[] lines = script.split("\n");
-        for(String line: lines) {
-            String finalLine = line;
-            int hashTagPosition = finalLine.indexOf("#");
-            if (hashTagPosition != -1) {
-                finalLine = finalLine.substring(0, hashTagPosition);
+
+            String[] lines = script.split("\n");
+            for (String line : lines) {
+                String finalLine = line;
+                int hashTagPosition = finalLine.indexOf("#");
+                if (hashTagPosition != -1) {
+                    finalLine = finalLine.substring(0, hashTagPosition);
+                }
+                finalLine = finalLine.trim();
+                finalLine = finalLine.replaceAll("\s+", " ");
+                if (!finalLine.isEmpty()) {
+                    result.add(finalLine);
+                }
             }
-            finalLine = finalLine.trim();
-            finalLine = finalLine.replaceAll("\s+", " ");
-            if(!finalLine.isEmpty()) {
-                result.add(finalLine);
-            }
-        }
+
         return result;
     }
 

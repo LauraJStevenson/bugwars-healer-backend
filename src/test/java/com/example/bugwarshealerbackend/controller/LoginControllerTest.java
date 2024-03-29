@@ -24,9 +24,6 @@ class LoginControllerTest {
 
     private String oldSecret;
 
-
-
-
     @InjectMocks
     private LoginController loginController;
     @BeforeEach
@@ -54,9 +51,6 @@ class LoginControllerTest {
 
         when(userRepository.findByUsername("klyndelara")).thenReturn(user);
 
-
-
-
         // Perform the login
         AuthenticatedUserResponse authenticatedUserResponse = loginController.login(userLoginRequest);
 
@@ -64,8 +58,9 @@ class LoginControllerTest {
         assertNotNull(authenticatedUserResponse);
         assertEquals("klyndelara", authenticatedUserResponse.getUsername());
         assertTrue(BCrypt.checkpw("password",authenticatedUserResponse.getPassword()));
-        assertNotEquals(expectedToken, authenticatedUserResponse.getToken());
         //assures that token is different in every login process.
+        assertNotEquals(expectedToken, authenticatedUserResponse.getToken());
+
 
 
 
