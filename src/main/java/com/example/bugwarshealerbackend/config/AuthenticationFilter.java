@@ -46,6 +46,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     }
 //responsible for extracting authentication information from the "Authorization" header, creating an authentication token,
 // and setting it in the security context for further processing in the Spring Security filter chain.
+
     private boolean authorizationHeaderIsInvalid(String authorizationHeader) {
         return authorizationHeader == null
                 || !authorizationHeader.startsWith("Bearer ");
