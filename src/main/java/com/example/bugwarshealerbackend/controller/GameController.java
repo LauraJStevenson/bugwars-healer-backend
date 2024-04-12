@@ -32,7 +32,7 @@ public class GameController {
     }
 
     // Initialize the game with the selected map and scripts
-    @PostMapping("/game/start")
+    @PostMapping("/start")
     public ResponseEntity<GameMap> startGame(@Valid @RequestBody StartGameRequest startGameRequest) {
         GameMap initialMap = new GameMap(startGameRequest.getMap());
         this.gameEngine = new GameEngine(initialMap); // Initialize the game engine with the initial map
