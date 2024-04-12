@@ -5,6 +5,7 @@ import com.example.bugwarshealerbackend.game.Compiler;
 import com.example.bugwarshealerbackend.game.GameEngine;
 import com.example.bugwarshealerbackend.model.GameMap;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,20 +34,22 @@ public class GameController {
 
     // Initialize the game with the selected map and scripts
     @PostMapping("/start")
-    public ResponseEntity<GameMap> startGame(@Valid @RequestBody StartGameRequest startGameRequest) {
-        GameMap initialMap = new GameMap(startGameRequest.getMap());
-        this.gameEngine = new GameEngine(initialMap); // Initialize the game engine with the initial map
-
-        // Assuming scripts are sent in order, if not you need to adjust how they are assigned
-        int[] script1 = startGameRequest.getScript1();
-        int[] script2 = startGameRequest.getScript2();
-        int[] script3 = startGameRequest.getScript3();
-        int[] script4 = startGameRequest.getScript4();
-
-        // Initialize bugs with scripts, it's essential for the game's first state
-        this.gameEngine.playOneTick(script1, script2, script3, script4);
-        return ResponseEntity.ok(initialMap); // Return the initial game state
+    public ResponseEntity<?> startGame(@Valid @RequestBody StartGameRequest startGameRequest) {
+        try {
+            GameMap initialMap = new GameMap(startGameRequest.getMap());
+            this.gameEngine = new GameEngine(initialMap);
+            int[] script1 = startGameRequest.getScript1();
+            int[] script2 = startGameRequest.getScript2();
+            int[] script3 = startGameRequest.getScript3();
+            int[] script4 = startGameRequest.getScript4();
+            this.gameEngine.playOneTick(script1, script2, script3, script4);
+            return ResponseEntity.ok(initialMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error starting the game: " + e.getMessage());
+        }
     }
+
 
     // Advance the game by one tick and return the new state
     @PostMapping("/advance")

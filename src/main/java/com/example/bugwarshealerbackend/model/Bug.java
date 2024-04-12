@@ -12,12 +12,13 @@ public class Bug extends Cell{
 
     private boolean executed;
 
-    public Bug (int x, int y, char bugType) {
+    public Bug(int x, int y, String type) {
         super(x, y);
-        direction = 'N';
-        this.scriptIndex = 0;
-        this.bugType = bugType;
-        this.executed = false;
+        if (type.length() == 1) {
+            this.bugType = type.charAt(0);
+        } else {
+            throw new IllegalArgumentException("Type must be a single character string.");
+        }
     }
 
     private boolean isAlly(char otherBugType){
@@ -33,7 +34,7 @@ public class Bug extends Cell{
 
     @Override
     public Cell clone() {
-        Bug result = new Bug(this.getRow(), this.getColumn(), bugType);
+        Bug result = new Bug(this.getRow(), this.getColumn(), Character.toString(bugType));
         result.setBugScript(this.bugScript);
         result.scriptIndex = this.scriptIndex;
         result.direction = this.direction;
@@ -150,7 +151,7 @@ public class Bug extends Cell{
             case 14:
                 Cell forwardCellFood = getForwardCell(map);
                 if(forwardCellFood instanceof Food){
-                    Bug newBug = new Bug(forwardCellFood.getRow(), forwardCellFood.getColumn(), bugType);
+                    Bug newBug = new Bug(forwardCellFood.getRow(), forwardCellFood.getColumn(), Character.toString(bugType));
                     newBug.setBugScript(this.bugScript);
                     map[forwardCellFood.getRow()][forwardCellFood.getColumn()] = newBug;
                 }

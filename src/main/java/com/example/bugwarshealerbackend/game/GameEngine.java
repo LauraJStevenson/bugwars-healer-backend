@@ -18,6 +18,9 @@ public class GameEngine {
 
     // Initializes bugs with their scripts.
     private void initializeBugs(GameMap map, int[]... scripts) {
+        if (scripts.length == 0) {
+            throw new IllegalArgumentException("No scripts provided for initializing bugs.");
+        }
         int counter = 0;
 
         Cell[][] cells = map.getCells();
@@ -26,7 +29,6 @@ public class GameEngine {
                 if (cell instanceof Bug) {
                     Bug bug = (Bug) cell;
 
-                    // Wrap around the scripts array if there are more bugs than scripts.
                     int scriptIndex = counter % scripts.length;
                     bug.setBugScript(scripts[scriptIndex]);
 
@@ -35,6 +37,7 @@ public class GameEngine {
             }
         }
     }
+
 
     // Advances the game by one tick and returns the new game state.
     public GameMap playOneTick(int[]... scripts) {

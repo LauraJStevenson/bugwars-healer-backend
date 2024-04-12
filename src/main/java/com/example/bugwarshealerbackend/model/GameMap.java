@@ -7,84 +7,73 @@ public class GameMap {
 
     private Cell[][] cells;
 
+    // Constructor for creating a GameMap from ASCII map representation
+    public GameMap(String asciiMap) {
+        String[] lines = asciiMap.split("\n");
+        cells = new Cell[lines.length][];
+        for (int i = 0; i < lines.length; i++) {
+            cells[i] = new Cell[lines[i].length()];
+            for (int j = 0; j < lines[i].length(); j++) {
+                cells[i][j] = createCellFromChar(lines[i].charAt(j), i, j);
+            }
+        }
+    }
+
+    // Helper method to create cells based on character
+    private Cell createCellFromChar(char ch, int x, int y) {
+        switch (ch) {
+            case 'X':
+                return new Wall(x, y);
+            case ' ':
+                return new EmptySpace(x, y);
+            case 'a': case 'b': case 'c': case 'd': // Assume these are different types of bugs
+                return new Bug(x, y, Character.toString(ch));  // Directly pass the char
+            case 'f':
+                return new Food(x, y);
+            default:
+                throw new IllegalArgumentException("Unsupported character in map: " + ch);
+        }
+    }
+
+    // Method to clone the GameMap for simulation without affecting the original
+    public GameMap clone() {
+        Cell[][] newCells = new Cell[cells.length][];
+        for (int i = 0; i < cells.length; i++) {
+            newCells[i] = new Cell[cells[i].length];
+            for (int j = 0; j < cells[i].length; j++) {
+                newCells[i][j] = cells[i][j].clone(); // Ensure Cell class has a clone method
+            }
+        }
+        return new GameMap(newCells);
+    }
+
+    // Private constructor used by clone method
     private GameMap(Cell[][] cells) {
         this.cells = cells;
     }
 
-    public void nextRound(){
-        for(Bug bug : getBugs()) {
-            bug.resetExecuted();
-        }
-    }
-
+    // Gets all bugs on the map
     public List<Bug> getBugs() {
         List<Bug> bugs = new ArrayList<>();
-        for(Cell[] cellRow : cells) {
-            for(Cell cellColumn : cellRow) {
-                if(cellColumn instanceof Bug) {
-                    Bug bug = (Bug) cellColumn;
-                    bugs.add(bug);
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                if (cell instanceof Bug) {
+                    bugs.add((Bug) cell);
                 }
             }
         }
         return bugs;
     }
 
-    public GameMap(String asciiMap) {
-        String[] lines = asciiMap.split("\n");
-        this.cells = new Cell[lines.length][];
-        for(int i = 0; i < lines.length; i++) {
-            String line = lines[i];
-            this.cells[i] = new Cell[line.length()];
-            for (int j = 0; j < line.length(); j++) {
-                char character = line.charAt(j);
-                Cell currentCell = null;
-                // create current cell
-                switch (character) {
-                    case 'X' :
-                        currentCell = new Wall(i,j);
-                        break;
-                    case ' ' :
-                        currentCell = new EmptySpace(i,j);
-                        break;
-                    case 'a' :
-                    case 'b' :
-                    case 'c' :
-                    case 'd' :
-                        Bug bug = new Bug(i,j, character);
-                        currentCell = bug;
-                        break;
-                    case 'f' :
-                        currentCell = new Food(i,j);
-                        break;
-                    default: throw new RuntimeException("Unexpected character in serialized map!");
-                }
-                cells[i][j] = currentCell;
-            }
+    // Moves the game to the next round, resetting states as necessary
+    public void nextRound() {
+        for (Bug bug : getBugs()) {
+            bug.resetExecuted(); // Assuming Bug class has a method to reset its state per round
         }
     }
 
-    // Get all cells
-    public Cell[][] getCells () {
-        return this.cells;
-    }
-
-    //Copy gameMap method
-    public GameMap clone() {
-        Cell[][] cells = new Cell[this.cells.length][];
-        List<Bug> bugs = new ArrayList<>();
-        //copy each cell and create new area
-        for(int i = 0 ; i< cells.length; i++) {
-            cells[i] = new Cell[this.cells[i].length];
-            for(int j = 0 ; j < cells[i].length; j++ ) {
-                cells[i][j] = this.cells[i][j].clone();
-                if(cells[i][j] instanceof Bug) {
-                    Bug bug = (Bug) cells[i][j];
-                    bugs.add(bug);
-                }
-            }
-        }
-        GameMap newMap = new GameMap(cells);
-        return newMap;
+    // Getter for cells
+    public Cell[][] getCells() {
+        return cells;
     }
 }
