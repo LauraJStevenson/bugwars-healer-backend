@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,15 +36,38 @@ public class GameController {
     // Initialize the game with the selected map and scripts
     @PostMapping("/start")
     public ResponseEntity<?> startGame(@Valid @RequestBody StartGameRequest startGameRequest) {
+        if (startGameRequest.getMap() == null || startGameRequest.getMap().isEmpty()) {
+            return ResponseEntity.badRequest().body("Map data must not be null or empty.");
+        }
         try {
             GameMap initialMap = new GameMap(startGameRequest.getMap());
-            this.gameEngine = new GameEngine(initialMap);
-            int[] script1 = startGameRequest.getScript1();
-            int[] script2 = startGameRequest.getScript2();
-            int[] script3 = startGameRequest.getScript3();
-            int[] script4 = startGameRequest.getScript4();
-            this.gameEngine.playOneTick(script1, script2, script3, script4);
+            this.gameEngine = new GameEngine(initialMap); // Initialize the game engine with the map
+
+            // Extract scripts from request, but handle them dynamically
+            List<int[]> scripts = new ArrayList<>();
+            if (startGameRequest.getScript1() != null && startGameRequest.getScript1().length > 0) {
+                scripts.add(startGameRequest.getScript1());
+            }
+            if (startGameRequest.getScript2() != null && startGameRequest.getScript2().length > 0) {
+                scripts.add(startGameRequest.getScript2());
+            }
+            if (startGameRequest.getScript3() != null && startGameRequest.getScript3().length > 0) {
+                scripts.add(startGameRequest.getScript3());
+            }
+            if (startGameRequest.getScript4() != null && startGameRequest.getScript4().length > 0) {
+                scripts.add(startGameRequest.getScript4());
+            }
+
+            // Ensure at least one script has been provided
+            if (scripts.isEmpty()) {
+                return ResponseEntity.badRequest().body("At least one valid script must be provided.");
+            }
+
+            int[][] scriptsArray = scripts.toArray(new int[scripts.size()][]);
+            this.gameEngine.playOneTick(scriptsArray);
             return ResponseEntity.ok(initialMap);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error starting the game: " + e.getMessage());
