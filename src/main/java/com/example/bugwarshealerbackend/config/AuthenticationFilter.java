@@ -68,7 +68,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             }
 
             User authenticatedUser = userRepository.findByUsername(claimUserName);
-            System.out.println("Authenticated user: " + authenticatedUser);
+//            System.out.println("Authenticated user: " + authenticatedUser);
             if (authenticatedUser == null)
             {
                 return null;
